@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+<div class="purchasing-dashboard">
+    <div class="row">
+        <div class="dashboard__transfers col" style="position: relative;">
+            <div class="transfer__header-top" style="margin-bottom: 12px;">
+                <nav class="nav-tabs" id="nav-tabs">
+                    <button  class="nav-btn-starter active" data-attr="purchase-list">
+                    Satın Alma Listesi
+                    <span>{{in_purchase_list_count}}</span>
+                    </button>
+                    <button class="nav-btn" data-attr="purchase-offer-list">
+                    Satın Alma Teklifleri
+                    <span>{{offer_count}}</span>
+                    </button>
+                    <button class="nav-btn" data-attr="purchase-order-list">
+                    Satın Alma Siparişleri
+                    <span>{{offer_order_count}}</span>
+                    </button>
+                    
+                </nav>
+                <button hx-get="{% url 'create-purchase-offer' %}" hx-target="#dialog" class="btn-primary">
+                    Satın Alma Emri Oluştur
+                </button>
+            </div>
+            <div class="transfer__header">
+                <h2>Satın Alma Listesi</h2>
+                <div class="filter-options">
+                    <p>Filtre seçildi: Somun</p>
+                    <button class="icon-button">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="transfers" hx-get="{% url 'get-purchase-list' %}" hx-trigger="load, stockChanged from:body">
+            </div>
+            <div class="btn-div" style="position: absolute; bottom: 0; right: 0; margin-top: 10px;">
+                <a class="btn-primary" href="#">Tümünü Gör</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="purchasing-stock-list">
+            <div class="dashboard__transfers col">
+                <div class="transfer__header">
+                    <h2>Stok Listesi</h2>
+                    <div class="filter-options">
+                        <p>Filtre seçildi: Somun, Artan</p>
+                        <button class="icon-button">
+                            <i class="fas fa-filter"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="transfers" hx-get="{% url 'get-stock-list' %}" hx-trigger="load, stockChanged from:body">
+                    <tr><td>Yükleniyor..</td></tr>
+                </div>
+                <div class="btn-div">
+                    <a class="btn-primary" href="#">Tümünü Gör</a>
+                </div>
+            </div>
+        </div>
+        <div class="purchasing-stock-list">
+            <div class="dashboard__transfers col">
+                <div class="transfer__header">
+                    <h2>Satıcı Listesi</h2>
+                    <div class="filter-options">
+                        <p>Filtre seçildi: En Sık Sipariş Verilen</p>
+                        <button class="icon-button">
+                            <i class="fas fa-filter"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="transfers" hx-get="{% url 'get-supplier-list' %}" hx-trigger="load, supplierChanged from:body">
+                    <tr><td>Yükleniyor..</td></tr>
+                </div>
+                <div class="btn-div">
+                    <a class="btn-primary" href="#">Tümünü Gör</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+    const navTabs = document.querySelectorAll("#nav-tabs > button");
+    navTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+        navTabs.forEach((tab) => {
+        tab.classList.remove("active");
+        });
+        tab.classList.add("active");
+    });
+    });
+
+
+    $(document).on('click', '.nav-btn-starter', function(e) {
+        e.preventDefault();
+        const csrftoken = getCookie('csrftoken');
+        var data_attr = $(this).attr('data-attr');
+        var ths = $(this);
+        var transfers = ths.closest('div').parent().find('.transfers');
+        transfers.html('');
+        $.ajax({
+            type: 'POST',
+            url: '/purchasing/get-purchase-list',
+            data: {
+                'csrfmiddlewaretoken': csrftoken,
+                'data_attr': data_attr,
+            },
+            success: function(response) {
+                html = response;
+                transfers.append(html)
+            }
+        })
+    })
+    
+    $(document).on('click', '.nav-btn', function(e) {
+        e.preventDefault();
+        const csrftoken = getCookie('csrftoken');
+        var data_attr = $(this).attr('data-attr');
+        var ths = $(this);
+        var transfers = ths.closest('div').parent().find('.transfers');
+        transfers.html('');
+        $.ajax({
+            type: 'POST',
+            url: '/purchasing/get-purchase-offers',
+            data: {
+                'csrfmiddlewaretoken': csrftoken,
+                'data_attr': data_attr,
+            },
+            success: function(response) {
+                html = response;
+                transfers.append(html)
+            }
+        })
+    })
+</script>
+{% endblock %}

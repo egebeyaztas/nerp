@@ -1,0 +1,92 @@
+{% load widget_tweaks %}
+
+{% if editview %}
+<form id="update-offer-form" method="post" action="{% url 'update-purchase-offer' offer.id %}">
+{% else %}
+<form hx-post="{% url 'create-purchase-offer' %}">
+{% endif %}
+    {% csrf_token %}
+    <h2>Satın Alma Teklifi Oluştur</h2>
+    <div class="double-with-formset">
+        <div class="form-info" style="gap: 0;">
+            <div class="form-group">
+                <div class="label">Tedarikçi</div>
+                <div class="input-container">
+                    {% render_field form.supplier class="form-control" placeholder="Tedarikçi" %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">Durum</div>
+                <div class="input-container">
+                    {% render_field form.approve_status class="form-control" placeholder="Onay Durumu" %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">Lojistik Firması Bilgileri</div>
+                <div class="input-container double">
+                    {% render_field form.quantity class="form-control" placeholder="Adet" %}
+                    {% render_field form.currency_type class="form-control" placeholder="Döviz Cinsi" %}
+                </div>
+            </div>
+        </div>
+        <div class="form-info" id="stock-formset">
+            {% if editview %}
+            {% include 'purchasing/partials/purchase-formset.html' %}
+            {% endif %}
+        </div>
+    </div>
+    <button class="form-btn-1" type="submit">Oluştur</button>
+</form>
+
+<script>
+    $(document).on('change', '#id_supplier', function(event){
+        event.preventDefault();
+        var supplier_id = $('#id_supplier').val()
+        const csrftoken = getCookie('csrftoken')
+        $('#stock-formset').html('');
+        $.ajax({
+            type: 'POST',
+            url: '/purchasing/get-purchase-formset',
+            data: {
+                'csrfmiddlewaretoken': csrftoken,
+                'supplier': supplier_id,
+            },
+            success: function(response) {
+                $('#stock-formset').html('');
+                $('#stock-formset').append(response);
+                
+            }
+        })
+    })
+/*
+    $(document).on('submit', '#update-offer-form', function(event) {
+        event.preventDefault();
+        $.ajax({
+
+        })
+    }) */
+</script>
+
+<script>
+    var add_button = document.querySelector("#add-formset")
+    var totalFormsx = document.getElementById("id_lines-TOTAL_FORMS")
+    console.log(totalFormsx);
+    
+    add_button.addEventListener('click', add_new_form)
+    function add_new_form(event) {
+        if(event){
+            event.preventDefault();
+        }
+        const currentForms = document.getElementsByClassName("formset-form")
+        const currentFormCount = currentForms.length // + 1;
+        const formCopyTarget = document.getElementById("formset-container")
+        const copyEmptyFormElement = document.getElementById("empty-form").cloneNode(true)
+        copyEmptyFormElement.setAttribute("class","formset-form")
+        copyEmptyFormElement.setAttribute("id", `form-${currentFormCount}`)
+        const regex = new RegExp("__prefix__", 'g')
+        copyEmptyFormElement.innerHTML = copyEmptyFormElement.innerHTML.replace(regex, currentFormCount)
+        totalFormsx.setAttribute('value', currentFormCount + 1)
+        formCopyTarget.append(copyEmptyFormElement);
+    }
+   
+</script>

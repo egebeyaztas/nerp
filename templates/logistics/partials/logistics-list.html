@@ -1,0 +1,85 @@
+{% for logistic in logistics %}
+<div class="transfer">
+    <!--<div class="transfer-logo">
+        <img src="https://assets.codepen.io/285131/apple.svg" />
+    </div>-->
+    <dl class="transfer-details">
+        <div>
+            <dt>{{logistic.products.first.name}}</dt>
+            <dd>Ürün İsmi</dd>
+        </div>
+        <div>
+            <dt>{{logistic.client.name}}</dt>
+            <dd>Müşteri</dd>
+        </div>
+        <div>
+            <dt>{{logistic.products.count}}</dt>
+            <dd>Ürün Adedi</dd>
+        </div>
+        <div>
+            <dt>{{logistic.created_at|date:"h:m, d M, Y" }}</dt>
+            <dd>Gönderim Tarihi</dd>
+        </div>
+        <div>
+            <dt>{{logistic.status}}</dt>
+            <dd>Gönderim Durumu</dd>
+        </div>
+        <div>
+            <dt>{{logistic.logistic_firm_name}}</dt>
+            <dd>Lojistik Firma Adı</dd>
+        </div>
+        <div>
+            <dt>{{logistic.last_updated|date:"h:m, d M, Y" }}</dt>
+            <dd>Son Güncelleme</dd>
+        </div>
+    </dl>
+    <div class="transfer-edit">
+        <button hx-get="{% url 'update-logistic-form' logistic.id %}" hx-target="#dialog" class="icon-button"><i class="fas fa-edit"></i></button>
+    </div>
+    <div class="transfer-edit">
+        <button hx-trigger="confirmed" hx-delete="{% url 'delete-logistic-data' logistic.id %}" hx-target="#logistic-list" id="delete-logistic-btn-{{logistic.id}}" type="submit" class="icon-button delete-button"><i class="fas fa-trash-alt"></i></button>
+    </div>
+</div>
+{% endfor %}
+<script>
+    $(document).ready(function(){
+          
+          $(':button').on('click', function(){
+            if($(this).hasClass('delete-button')) {
+                Swal.fire({
+                text: 'Ögeyi silmek istediğinizden emin misiniz?', 
+                showDenyButton: true,
+                confirmButtonText: 'Evet',
+                denyButtonText: 'Hayır',
+                }).then((result) => {
+                    if(result.isConfirmed) {
+                        var id = $(this).attr("id");
+                        htmx.trigger(`#${id}`, 'confirmed');
+                        Swal.fire({
+                        toast: true,
+                        icon: 'success',
+                        title: 'Öge Silindi',
+                        animation: true,
+                        position: 'bottom',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    })
+                    } else if (result.isDenied) {
+                        Swal.fire({
+                        toast: true,
+                        icon: 'error',
+                        title: 'İşlem İptal Edildi',
+                        animation: true,
+                        position: 'bottom',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    })
+                    }
+                })
+            }
+          })
+        })
+    
+</script>

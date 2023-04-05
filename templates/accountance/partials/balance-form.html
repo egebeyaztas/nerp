@@ -1,0 +1,11 @@
+<form hx-post="{% url 'update-balance' balance.id %}">
+    {% csrf_token %}
+    <h2>Kazanç Kaydı</h2>
+    {% for field in form %}
+    <div class="label">{{ field.label }}</div>
+    <div class="input-container">
+        {{field}}
+    </div>
+    {% endfor %}
+    <button style="margin-top: -60px;" class="form-btn-1" type="submit">Güncelle</button>
+</form>

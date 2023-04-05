@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="light-exp">
+    <div class="dashboard__transfers incomes col">
+        <div class="transfer__header">
+            <h2>Gider</h2>
+            <div class="filter-options">
+                <p>Filtre seçildi: 25K ₺'dan fazla olanlar</p>
+                <button class="icon-button">
+                    <i class="fas fa-filter"></i>
+                </button>
+                <button hx-get="{% url 'create-expense-form' %}" hx-target="#dialog" class="icon-button">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div id="income-list" class="transfers" hx-trigger="load, expenseListChanged from:body">
+            {% for expense in expenses %}
+            <div class="transfer">
+                <!--<div class="transfer-logo">
+                                  <img src="https://assets.codepen.io/285131/apple.svg" />
+                              </div>-->
+                <dl class="transfer-details">
+                    <div>
+                        <dt>{{expense.name}}</dt>
+                        <dd>Gider Adı</dd>
+                    </div>
+                    <div>
+                        <dt>{{expense.expense_type}}</dt>
+                        <dd>Gider Türü</dd>
+                    </div>
+                    <div>
+                        <dt>{{expense.expense_date}}</dt>
+                        <dd>Ödeme Tarihi</dd>
+                    </div>
+                    <div>
+                        <dt>{{expense.description}}</dt>
+                        <dd>Gider Açıklaması</dd>
+                    </div>
+                </dl>
+                <div class="transfer-number">
+                    - $ {{expense.amount}}
+                </div>
+                <div class="transfer-edit">
+                    <button type="button" hx-get="{% url 'update-expense-form' expense.id %}" hx-target="#dialog" class="icon-button"><i class="fas fa-edit"></i></button>
+                </div>
+                <div class="transfer-edit" style="margin-left: 10px;">
+                    <button hx-trigger="confirmed" hx-delete="{% url 'delete-expense' expense.id %}" hx-target="#income-list" type="submit" class="icon-button delete-button" id="delete-income-btn-{{income.id}}"><i class="fas fa-trash-alt"></i></button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+          
+          $(':button').on('click', function(){
+            if($(this).hasClass('delete-button')) {
+                Swal.fire({
+                text: 'Ögeyi silmek istediğinizden emin misiniz?', 
+                showDenyButton: true,
+                confirmButtonText: 'Evet',
+                denyButtonText: 'Hayır',
+                }).then((result) => {
+                    if(result.isConfirmed) {
+                        var id = $(this).attr("id");
+                        htmx.trigger(`#${id}`, 'confirmed');
+                        Swal.fire({
+                        toast: true,
+                        icon: 'success',
+                        title: 'Öge Silindi',
+                        animation: true,
+                        position: 'bottom',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    })
+                    } else if (result.isDenied) {
+                        Swal.fire({
+                        toast: true,
+                        icon: 'error',
+                        title: 'İşlem İptal Edildi',
+                        animation: true,
+                        position: 'bottom',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    })
+                    }
+                })
+            }
+          })
+        })
+    
+</script>
+{% endblock %}
+

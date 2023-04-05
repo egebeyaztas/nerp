@@ -1,0 +1,440 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+<div class="marketing-dashboard">
+    <div class="dashboard__transfers col" style="position: relative; width: 92%;">
+    <!-- <div class="transfer__header-top" style="margin-bottom: 12px;">
+            <nav class="nav-tabs" id="nav-tabs">
+                <button  class="nav-btn-starter active" data-attr="purchase-list">
+                Satın Alma Listesi
+                <span>{{in_purchase_list_count}}</span>
+                </button>
+                <button class="nav-btn" data-attr="purchase-offer-list">
+                Satın Alma Teklifleri
+                <span>{{offer_count}}</span>
+                </button>
+                <button class="nav-btn" data-attr="purchase-order-list">
+                Satın Alma Siparişleri
+                <span>{{offer_order_count}}</span>
+                </button>
+                
+            </nav> 
+            <button hx-get="{% url 'create-purchase-offer' %}" hx-target="#dialog" class="btn-primary">
+                Satın Alma Emri Oluştur
+            </button>
+        </div> -->
+        <div class="transfer__header">
+            <h2>Potansiyel Müşteri Listesi</h2>
+            <div class="filter-options">
+                <p>Filtre seçildi: En Yeni</p>
+                <button class="icon-button">
+                    <i class="fas fa-filter"></i>
+                </button>
+                <button class="icon-button" hx-get="{% url 'create-potential-client' %}" hx-target="#dialog">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="transfers" hx-get="{% url 'get-potential-client-list' %}" hx-trigger="load, potentialClientChanged from:body">
+            <tr><td>Yükleniyor..</td></tr>
+        </div>
+        <div class="btn-div" style="position: absolute; bottom: 0; right: 0; margin-top: 10px;">
+            <a class="btn-primary" href="#">Tümünü Gör</a>
+        </div>
+    </div>
+  <div class="dashboard__header" style="margin-bottom: -28px; width: 87%;">
+      <div class="dashboard__sub-title_w-button">
+          <h2>Pazarlama Verileri</h2>
+          <button class="icon-button" hx-get="{% url 'update-marketing-form' marketing.id %}" hx-target="#dialog"><i class="fas fa-edit"></i></button>
+      </div>
+      <ul class="dashboard__header-filters">
+          <li>
+              <a href="#">Yıllık</a>
+          </li>
+          <li>
+              <div class="vertical"></div>
+          </li>
+          <li>
+              <a href="#">Aylık</a>
+          </li>
+          <li>
+              <div class="vertical"></div>
+          </li>
+          <li>
+              <a href="#">Günlük</a>
+          </li>
+      </ul>
+  </div>
+  <div class="row">
+      <div class="top-panels">
+          <div class="panel">
+              <!--<div class="panel__go-to">></div>-->
+              <div class="panel__info">
+                  <h4><i class="fas fa-sun"></i> Sosyal Medya Reklamları</h4>
+                  <span>8 Müşteri</span>
+                  <p>Bu ay <em>2</em> yeni müşteri kazanıldı.</p>
+              </div>
+          </div>
+          <div class="panel">
+              <!--<div class="panel__go-to">></div>-->
+              <div class="panel__info">
+                  <h4><i class="fas fa-sun"></i> Mail Pazarlama</h4>
+                  <span>14 Müşteri</span>
+                  <p>Bu ay <em>1</em> yeni müşteri kazanıldı.</p>
+              </div>
+          </div>
+          <div class="panel">
+              <!--<div class="panel__go-to">></div>-->
+              <div class="panel__info">
+                  <h4><i class="fas fa-sun"></i> Organik Müşteriler</h4>
+                  <span>26 Müşteri</span>
+                  <p>Bu ay <em>5</em> yeni müşteri kazanıldı.</p>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="dashboard__header" style="margin-bottom:-15px; width:87%; margin-top: 5px;">
+      <h2 class="dashboard__sub-title">Kazanılan Müşteri İstatistiği</h2>
+      <ul class="dashboard__header-filters">
+          <li>
+              <a href="#">Yıllık</a>
+          </li>
+          <li>
+              <div class="vertical"></div>
+          </li>
+          <li>
+              <a href="#">Aylık</a>
+          </li>
+          <li>
+              <div class="vertical"></div>
+          </li>
+          <li>
+              <a href="#">Günlük</a>
+          </li>
+      </ul>
+  </div>
+  <div class="row">
+      <div class="chart-box">
+          <canvas id="marketing-social-media-chart"></canvas>
+      </div>
+      <div class="chart-box">
+          <canvas id="marketing-mail-chart"></canvas>
+      </div>
+      <div class="chart-box">
+          <canvas id="organic-client-chart"></canvas>
+      </div>
+  </div>
+  <div class="dashboard__transfers col" style="position: relative; width: 92%;">
+        <div class="transfer__header-top" style="margin-bottom: 12px;">
+            <nav class="nav-tabs" id="nav-tabs">
+                <button  class="nav-btn-starter active" data-attr="purchase-list">
+                Yayındaki Reklamlar
+                <span>3</span>
+                </button>
+                <button class="nav-btn" data-attr="purchase-offer-list">
+                Pasif Reklamlar
+                <span>6</span>
+                </button>
+            </nav>
+        </div>
+        <div class="transfer__header">
+            <h2>Reklam Listesi</h2>
+            <div class="filter-options">
+                <p>Filtre seçildi: En Yeni</p>
+                <button class="icon-button">
+                    <i class="fas fa-filter"></i>
+                </button>
+                <button class="icon-button" hx-get="{% url 'create-ads' %}" hx-target="#dialog">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="transfers" hx-get="{% url 'get-ads-list' %}" hx-trigger="load, adChanged from:body">
+            <tr><td>Yükleniyor..</td></tr>
+        </div>
+        <div class="btn-div" style="position: absolute; bottom: 0; right: 0; margin-top: 10px;">
+            <a class="btn-primary" href="#">Tümünü Gör</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+        //graphs n charts
+
+        //data
+
+        //config
+
+        //init
+        const social_media_chart_ctx = document.getElementById('marketing-social-media-chart').getContext('2d');
+        const social_media_chart = new Chart(social_media_chart_ctx, {
+            type: 'line',
+            data: {
+                labels: ['Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos'],
+                datasets: [
+                    {
+                    label: 'Sosyal Medyadan Gelen Müşteri Sayısı',
+                    data: [5, 9, 4, 10, 7, 8],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'Mail Pazarlamadan Gelen Müşteri Sayısı',
+                    data: [7, 11, 2, 9, 2, 13],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'Organik Müşteri Sayısı',
+                    data: [4, 6, 13, 6, 12, 13],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }
+            ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        min: 0,
+                        max: 20,
+                        ticks: {
+                            stepSize:5,
+                        },
+                        grid: {
+                            display: false
+                        },
+                    },
+                    x: {
+                        grid: {
+                            display: false,
+                        }
+                    }
+                }
+            }
+        });
+        const mail_chart_ctx = document.getElementById('marketing-mail-chart').getContext('2d');
+        const mail_marketing_chart = new Chart(mail_chart_ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos'],
+                datasets: [
+                    {
+                    label: 'Sosyal Medyadan Gelen Müşteri Sayısı',
+                    data: [5, 9, 4, 10, 7, 8],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'Mail Pazarlamadan Gelen Müşteri Sayısı',
+                    data: [7, 11, 2, 9, 2, 13],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(54, 162, 235, 1)',
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'Organik Müşteri Sayısı',
+                    data: [4, 6, 13, 6, 12, 13],
+                    backgroundColor: [
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 206, 86, 1)',
+                    ],
+                    borderWidth: 1
+                }
+            ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        min: 0,
+                        max: 20,
+                        ticks: {
+                            stepSize:5,
+                        },
+                        grid: {
+                            display: false
+                        },
+                    },
+                    x: {
+                        grid: {
+                            display: false,
+                        }
+                    }
+                }
+            }
+        });
+        const organic_chart_ctx = document.getElementById('organic-client-chart').getContext('2d');
+        const organic_client_chart = new Chart(organic_chart_ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Sosyal Medya', 'Mail', 'Organik'],
+                datasets: [{
+                    label: 'Müşteri Kazanma Dağılımı %',
+                    data: [30, 24, 46],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive:true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Müşteri Kazanma Dağılımı %',
+                    },
+                    legend: {
+                        position: 'top',
+                    },
+                },
+                scales: {
+                    y: {
+                        display: false,
+                        beginAtZero: true,
+                        grid: {
+                            display: false
+                        },
+                    },
+                    x: {
+                        display: false,
+                        grid: {
+                            display: false,
+                        }
+                    }
+                }
+            }
+        });
+</script>
+<script>
+       const navTabs = document.querySelectorAll("#nav-tabs > button");
+        navTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+            navTabs.forEach((tab) => {
+            tab.classList.remove("active");
+            });
+            tab.classList.add("active");
+        });
+        });
+
+</script>
+
+
+{% endblock %}

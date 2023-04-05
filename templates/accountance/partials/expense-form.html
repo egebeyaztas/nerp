@@ -1,0 +1,70 @@
+{% load widget_tweaks %}
+{% if editview %}
+<form hx-post="{% url 'update-expense' expense.id %}">
+{% else %}
+<form hx-post="{% url 'create-expense' %}">
+{% endif %}
+    {% csrf_token %}
+    <h2 style="text-align: center; margin-top:10px;">Gider Ekle</h2>
+    <div class="label">{{form.name.label}}</div>
+    <div class="input-container double">         
+        {% render_field form.name class="form-control" placeholder="Gider Adı" %}
+        {% render_field form.expense_type class="form-control" placeholder="Gider Türü" %}
+    </div>
+    <div class="label">{{form.description.label}}</div>
+    <div class="input-container">
+        {% render_field form.description class="form-control" placeholder="Gider Açıklaması (Zorunlu Değil)" %}
+    </div>
+    <div class="label">Gider Bilgileri</div>
+    <div class="input-container double">
+        {% render_field form.purchase class="form-control" placeholder="Satın Alma" %}
+        {% render_field form.amount class="form-control" placeholder="Tutar" %}
+    </div>
+    <div class="label">{{form.expense_date.label}}</div>
+    <div class="input-container">
+        {% render_field form.expense_date type="date" class="form-control" placeholder="mm/dd/yyyy" %}
+    </div>
+    <button class="form-btn-1" type="submit">Oluştur</button>
+</form>
+<script>
+    $(document).ready(function(){
+          
+          $(':button').on('click', function(){
+            if($(this).hasClass('delete-button')) {
+                Swal.fire({
+                text: 'Ögeyi silmek istediğinizden emin misiniz?', 
+                showDenyButton: true,
+                confirmButtonText: 'Evet',
+                denyButtonText: 'Hayır',
+                }).then((result) => {
+                    if(result.isConfirmed) {
+                        var id = $(this).attr("id");
+                        htmx.trigger(`#${id}`, 'confirmed');
+                        Swal.fire({
+                        toast: true,
+                        icon: 'success',
+                        title: 'Öge Silindi',
+                        animation: true,
+                        position: 'bottom',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    })
+                    } else if (result.isDenied) {
+                        Swal.fire({
+                        toast: true,
+                        icon: 'error',
+                        title: 'İşlem İptal Edildi',
+                        animation: true,
+                        position: 'bottom',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    })
+                    }
+                })
+            }
+          })
+        })
+    
+</script>

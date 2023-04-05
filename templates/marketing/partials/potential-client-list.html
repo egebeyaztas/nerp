@@ -1,0 +1,35 @@
+{% for pclient in potential_clients %}
+<div class="transfer">
+    <!--<div class="transfer-logo">
+        <img src="https://assets.codepen.io/285131/apple.svg" />
+    </div>-->
+    <dl class="transfer-details">
+        <div>
+            <dt>{{pclient.name}}</dt>
+            <dd>Potansiyel Müşteri İsmi</dd>
+        </div>
+        <div>
+            <dt>{{pclient.executive}}</dt>
+            <dd>Yetkili Adı</dd>
+        </div>
+        <div>
+            <dt>{{pclient.email}}</dt>
+            <dd>Müşteri Maili</dd>
+        </div>
+        <div>
+            <dt>{{pclient.website}}</dt>
+            <dd>Müşteri Websitesi</dd>
+        </div>
+        <div>
+            <dt>{{pclient.location}}</dt>
+            <dd>Lokasyon</dd>
+        </div>
+    </dl>
+    <div class="transfer-edit">
+        <button hx-get="{% url 'update-potential-client' pclient.id %}" hx-target="#dialog" class="icon-button"><i class="fas fa-edit"></i></button>
+    </div>
+    <div class="transfer-edit" style="margin-left:10px;">
+        <button type="submit" class="icon-button delete-button"><i class="fas fa-trash-alt"></i></button>
+    </div>
+</div>
+{% endfor %}

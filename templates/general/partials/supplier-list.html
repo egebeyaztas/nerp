@@ -1,0 +1,30 @@
+{% for supplier in suppliers %}
+<div class="transfer">
+    <!--<div class="transfer-logo">
+        <img src="https://assets.codepen.io/285131/apple.svg" />
+    </div>-->
+    <dl class="transfer-details">
+        <div style="width: 200px;">
+            <dt>{{supplier.name}}</dt>
+            <dd>Firma Adı</dd>
+        </div>
+        <div style="width: 200px;">
+            <dt>{{supplier.sells.first.name}}</dt>
+            <dd>En Sık Sipariş</dd>
+        </div>
+        <div>
+            <dt>{{supplier.executive}}</dt>
+            <dd>Firma Yetkilisi</dd>
+        </div>
+        <div>
+            <button hx-get="{% url 'create-purchase-offer' %}" hx-target="#dialog" class="btn-primary" style="padding: 5px 10px; font-size: 14px; margin-right: 20px;">Sipariş Oluştur</button>
+        </div>
+    </dl>
+    <div class="transfer-edit">
+        <button hx-get="{% url 'edit-supplier' supplier.id %}" hx-target="#dialog" class="icon-button"><i class="fas fa-edit"></i></button>
+    </div>
+    <div class="transfer-edit" style="margin-left: 10px;">
+        <button class="icon-button"><i class="fas fa-trash-alt"></i></button>
+    </div>
+</div>
+{% endfor %}

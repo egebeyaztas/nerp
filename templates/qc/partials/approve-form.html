@@ -1,0 +1,5 @@
+<form method="post" action="{% url 'approve-product' qc.id product.id %}">
+    {% csrf_token %}
+    <label>Onay:</label>
+    <input type="checkbox" onChange="this.form.submit()" name="approve-checkbox" value="approved" {% if product.approved %} checked {% else %} '' {% endif %}>
+</form>

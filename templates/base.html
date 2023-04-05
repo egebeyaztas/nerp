@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/ebce53b2c9.js" crossorigin="anonymous"></script>
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/static/css/index.css">
+    
+    {% block css %}
+    {% endblock %}
+    <title>Spectre</title>
+</head>
+<body>
+<nav class="sidebar">
+    <header>
+        <div class="image-text">
+            <span class="image">
+                <!--<img src="logo.png" alt="">-->
+            </span>
+
+            <div class="text logo-text">
+                <span class="name">Eurosoft</span>
+                <span class="profession">Spectre</span>
+            </div>
+        </div>
+
+        <i class='bx bx-chevron-right toggle'></i>
+    </header>
+
+    <div class="menu-bar">
+        <div class="menu">
+
+            <li class="search-box">
+                <i class='bx bx-search icon'></i>
+                <input type="text" placeholder="Search...">
+            </li>
+
+            <ul class="menu-links">
+                <li class="nav-link">
+                    <a href="index.html">
+                        <i class='bx bx-home-alt icon'></i>
+                        <span class="text nav-text">Ana Panel</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="accountance.html">
+                        <i class='bx bx-bar-chart-alt-2 icon'></i>
+                        <span class="text nav-text">Muhasebe</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="manufacturing.html">
+                        <i class='bx bx-bell icon'></i>
+                        <span class="text nav-text">Üretim</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="#">
+                        <i class='bx bx-pie-chart-alt icon'></i>
+                        <span class="text nav-text">Satın Alma</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="#">
+                        <i class='bx bx-heart icon'></i>
+                        <span class="text nav-text">Lojistik</span>
+                    </a>
+                </li>
+                <li class="nav-link">
+                    <a href="#">
+                        <i class='bx bx-heart icon'></i>
+                        <span class="text nav-text">İnsan Kaynakları</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="#">
+                        <i class='bx bx-wallet icon'></i>
+                        <span class="text nav-text">Pazarlama</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="#">
+                        <i class='bx bx-wallet icon'></i>
+                        <span class="text nav-text">Raporlar</span>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+        <!--
+        <div class="bottom-content">
+            <li class="">
+                <a href="#">
+                    <i class='bx bx-log-out icon' ></i>
+                    <span class="text nav-text">Logout</span>
+                </a>
+            </li>
+
+            <li class="mode">
+                <div class="sun-moon">
+                    <i class='bx bx-moon icon moon'></i>
+                    <i class='bx bx-sun icon sun'></i>
+                </div>
+                <span class="mode-text text">Dark mode</span>
+
+                <div class="toggle-switch">
+                    <span class="switch"></span>
+                </div>
+            </li>  
+        </div>
+        -->
+    </div>
+</nav>
+
+<div class="spectre-container">
+  <div class="header">
+      <div class="app-header-logo">
+          <div class="logo">
+              <span class="logo-icon">
+                  <img src="https://assets.codepen.io/285131/almeria-logo.svg" />
+              </span>
+              <h1 class="logo-title">
+                  <span>Turkas</span>
+                  <span>Makina</span>
+              </h1>
+          </div>
+      </div>
+      <div class="app-header-profile">
+          <button class="user-profile">
+              <div class="user-name">
+                  <span>Mert Önal</span>
+                  <span class="user-title">Genel Müdür</span>
+              </div>
+              <span class="user-img">
+                  <img src="https://assets.codepen.io/285131/almeria-avatar.jpeg" />
+              </span>
+          </button>
+      </div>
+  </div>
+  {% block content %}
+  {% endblock %}
+
+</div>
+
+<div class="form-modal" id="modal">
+  <div class="form-modal__content" id="dialog" hx-target="this">
+    <!--Inject Htmx Here-->
+  </div>
+</div>
+{% block modals %}
+{% endblock %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://unpkg.com/htmx.org@1.8.0" integrity="sha384-cZuAZ+ZbwkNRnrKi05G/fjBX+azI9DNOkNYysZ0I/X5ZFgsmMiBXgDZof30F5ofc" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{% static 'js/index.js' %}"></script>
+<script src="{% static 'js/dialog.js' %}"></script>
+<script src="{% static 'js/dynamics.js' %}"></script>
+<script>
+    modal = document.getElementById('modal');
+    window.onclick = function(event) {
+
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    document.querySelector('.close-modal').addEventListener('click', function() {
+        modal.style.display = "none";
+    })
+</script>
+<script>
+    document.body.addEventListener('htmx:configRequest', (event) => {
+        event.detail.headers['X-CSRFToken'] = '{{csrf_token}}';
+    })
+</script>
+
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>

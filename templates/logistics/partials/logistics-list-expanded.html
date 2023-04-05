@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="light-exp">
+    <div class="dashboard__transfers incomes col">
+        <div class="transfer__header">
+            <h2>Gider</h2>
+            <div class="filter-options">
+                <p>Filtre seçildi: 25K ₺'dan fazla olanlar</p>
+                <button class="icon-button">
+                    <i class="fas fa-filter"></i>
+                </button>
+                <button hx-get="{% url 'create-logistic-form' %}" hx-target="#dialog" class="icon-button">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div id="logistic-list" class="transfers" hx-trigger="load, logisticsChanged from:body">
+            {% for logistic in logistics %}
+            <div class="transfer">
+                <!--<div class="transfer-logo">
+        <img src="https://assets.codepen.io/285131/apple.svg" />
+    </div>-->
+                <dl class="transfer-details">
+                    <div>
+                        <dt>{{logistic.products.first.name}}</dt>
+                        <dd>Ürün İsmi</dd>
+                    </div>
+                    <div>
+                        <dt>{{logistic.client.name}}</dt>
+                        <dd>Müşteri</dd>
+                    </div>
+                    <div>
+                        <dt>{{logistic.products.count}}</dt>
+                        <dd>Ürün Adedi</dd>
+                    </div>
+                    <div>
+                        <dt>{{logistic.created_at|date:"h:m, d M, Y" }}</dt>
+                        <dd>Kayıt Tarihi</dd>
+                    </div>
+                    <div>
+                        <dt>{{logistic.sending_date|date:"h:m, d M, Y" }}</dt>
+                        <dd>Gönderim Tarihi</dd>
+                    </div>
+                    <div>
+                        <dt>{{logistic.status}}</dt>
+                        <dd>Gönderim Durumu</dd>
+                    </div>
+                    <div>
+                        <dt>{{logistic.logistic_firm_name}}</dt>
+                        <dd>Lojistik Firma Adı</dd>
+                    </div>
+                    <div>
+                        <dt>{{logistic.logistic_firm_phone}}</dt>
+                        <dd>Lojistik Firma Telefon</dd>
+                    </div>
+                    <div>
+                        <dt>{{logistic.logistic_firm_email}}</dt>
+                        <dd>Lojistik Firma Mail</dd>
+                    </div>
+                    <div>
+                        <dt>{{logistic.cost}}</dt>
+                        <dd>Lojistik Tutarı</dd>
+                    </div>
+                    <div>
+                        <dt>{{logistic.last_updated|date:"h:m, d M, Y" }}</dt>
+                        <dd>Son Güncelleme</dd>
+                    </div>
+                </dl>
+                <div class="transfer-edit">
+                    <button hx-get="{% url 'update-logistic-form' logistic.id %}" hx-target="#dialog"
+                        class="icon-button edit-smt"><i class="fas fa-edit"></i></button>
+                </div>
+                <div class="transfer-edit" style="margin-left: 10px;">
+                    <button hx-trigger="confirmed" hx-delete="{% url 'delete-logistic-data' logistic.id %}"
+                        hx-target="#logistic-list" id="delete-logistic-btn-{{logistic.id}}" type="submit"
+                        class="icon-button delete-button"><i class="fas fa-trash-alt"></i></button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="light-exp" style="overflow-x: auto;">
+    <div class="datatable-container">
+        <!-- ======= Header tools ======= -->
+        <div class="header-tools">
+          <div class="tools">
+            <ul>
+              <li>
+                  <h2>Sipariş Listesi</h2>
+              </li>
+              <li>
+                <button class="icon-button">
+                  <i class="fas fa-filter"></i>
+                </button>
+              </li>
+              <li>
+                <button class="icon-button">
+                  <i class="fas fa-plus"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+      
+          <div class="search">
+            <input type="search" class="search-input" placeholder="Ara..." />
+          </div>
+        </div>
+      
+        <!-- ======= Table ======= -->
+        <table class="datatable">
+          <thead>
+            <tr>
+              
+              <th>Durum</th>
+              <th>Sipariş ID</th>
+              <th>Müşteri Adı</th>
+              <th>Ürün Adı</th>
+              <th>Ürün Adedi</th>
+              <th>Son Teslim Tarihi</th>
+              <th>Müşteri Lokasyonu</th>
+              <th>Müşteri Yetkilisi</th>
+              <th>Paketlenmeye Hazır Ürün Sayısı</th>
+              <th></th>
+            </tr>
+          </thead>
+      
+          <tbody hx-get="{% url 'order-list' %}" hx-trigger="load, orderChanged from:body">
+          </tbody>
+        </table>
+      
+        <!-- ======= Footer tools ======= -->
+        <div class="footer-tools">
+          <div class="list-items">
+            <select name="n-entries" id="n-entries" class="n-entries">
+              <option value="5" selected>5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+            </select>
+            Veri Göster
+          </div>
+      
+          <div class="pages">
+            <ul>
+              <li><span class="active">1</span></li>
+              <li><button>2</button></li>
+              <li><button>3</button></li>
+              <li><button>4</button></li>
+              <li><span>...</span></li>
+              <li><button>9</button></li>
+              <li><button>10</button></li>
+            </ul>
+          </div>
+        </div>
+    </div>
+</div>
+
+<div class="mal">
+    <h2>oha</h2>
+    <h2>oha</h2>
+    <h2>oha</h2>
+    <h2>oha</h2>
+    <h2>oha</h2>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $(':button').on('click', function () {
+            if ($(this).hasClass('delete-button')) {
+                Swal.fire({
+                    text: 'Ögeyi silmek istediğinizden emin misiniz?',
+                    showDenyButton: true,
+                    confirmButtonText: 'Evet',
+                    denyButtonText: 'Hayır',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var id = $(this).attr("id");
+                        htmx.trigger(`#${id}`, 'confirmed');
+                        Swal.fire({
+                            toast: true,
+                            icon: 'success',
+                            title: 'Öge Silindi',
+                            animation: true,
+                            position: 'bottom',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        })
+                    } else if (result.isDenied) {
+                        Swal.fire({
+                            toast: true,
+                            icon: 'error',
+                            title: 'İşlem İptal Edildi',
+                            animation: true,
+                            position: 'bottom',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        })
+                    }
+                })
+            }
+        })
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% for stock in stocks %}
+<div class="transfer">
+    <!--<div class="transfer-logo">
+        <img src="https://assets.codepen.io/285131/apple.svg" />
+    </div>-->
+    <dl class="transfer-details">
+        <div style="width: 200px;">
+            <dt>{{stock.name}}</dt>
+            <dd>İsim</dd>
+        </div>
+        <div>
+            <dt>{{stock.quantity}} (!)</dt>
+            <dd>Adet</dd>
+        </div>
+    </dl>
+    <div class="transfer-edit">
+        <button hx-get="{% url 'update-stock' stock.id %}" hx-target="#dialog" class="icon-button"><i class="fas fa-edit"></i></button>
+    </div>
+</div>
+{% endfor %}

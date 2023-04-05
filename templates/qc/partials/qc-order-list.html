@@ -1,0 +1,31 @@
+{% for qc_order in qc_orders %}
+<div class="transfer">
+    <!--<div class="transfer-logo">
+        <img src="https://assets.codepen.io/285131/apple.svg" />
+    </div>-->
+    <dl class="transfer-details">
+        <div>
+            <dt>{{qc_order.qc_id}}</dt>
+            <dd>Emir ID</dd>
+        </div>
+        <div>
+            <dt>{{qc_order.executive.username}}</dt>
+            <dd>Yetkili</dd>
+        </div>
+        <div>
+            <dt>{% for product in qc_order.products.all %} {{product.product_group}}-{{product.product_id}}, {% endfor %}</dt>
+            <dd>Ürünler</dd>
+        </div>
+        <div>
+            <dt>{{qc_order.deadline|date:"h:m, d M, Y"}}</dt>
+            <dd>Son Teslim Tarihi</dd>
+        </div>
+    </dl>
+    <div class="transfer-edit">
+        <button hx-get="{% url 'update-qc-order' qc_order.id %}" hx-target="#dialog" class="icon-button"><i class="fas fa-edit"></i></button>
+    </div>
+    <div class="transfer-edit" style="margin-left: 10px; margin-right:5px;">
+        <button class="icon-button"><i class="fas fa-minus"></i></button>
+    </div>
+</div>
+{% endfor %}

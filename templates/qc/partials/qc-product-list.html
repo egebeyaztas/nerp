@@ -1,0 +1,31 @@
+{% for product in products %}
+<div class="transfer">
+    <!--<div class="transfer-logo">
+        <img src="https://assets.codepen.io/285131/apple.svg" />
+    </div>-->
+    <dl class="transfer-details">
+        <div>
+            <dt>{{product.product_group}}-{{product.product_id}}</dt>
+            <dd>Ürün Adı</dd>
+        </div>
+        <div>
+            <dt>{{product.job_order.job_order_id}}</dt>
+            <dd>İş Emri ID</dd>
+        </div>
+        <div>
+            <dt>{{product.order.name}}</dt>
+            <dd>Sipariş</dd>
+        </div>
+        <div>
+            <dt>{{product.created_at|date:"h:m, d M, Y"}}</dt>
+            <dd>Üretim Tarihi</dd>
+        </div>
+    </dl>
+    <div class="transfer-edit">
+        <button class="icon-button">Emir Oluştur</button>
+    </div>
+    <div class="transfer-edit" style="margin-left: 10px; margin-right:5px;">
+        <button class="icon-button"><i class="fas fa-minus"></i></button>
+    </div>
+</div>
+{% endfor %}

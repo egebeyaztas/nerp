@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="light-exp">
+    <div class="dashboard__transfers incomes col">
+        <div class="transfer__header">
+            <h2>Faturalar</h2>
+            <div class="filter-options">
+                <p>Filtre seçildi: 25K ₺'dan fazla olanlar</p>
+                <button class="icon-button">
+                    <i class="fas fa-filter"></i>
+                </button>
+                <button hx-get="{% url 'create-invoice-form' %}" hx-target="#dialog" class="icon-button">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div id="invoice-list" class="transfers" hx-trigger="load, invoiceListChanged from:body">
+            {% for invoice in invoices %}
+            <div class="transfer">
+                <!--<div class="transfer-logo">
+                    <img src="https://assets.codepen.io/285131/apple.svg" />
+                </div>-->
+                <dl class="transfer-details">
+                    <div>
+                        <dt>{{invoice.invoice_id}}</dt>
+                        <dd>Fatura ID</dd>
+                    </div>
+                    <div>
+                        <dt>{{invoice.name}}</dt>
+                        <dd>İsim</dd>
+                    </div>
+                    <div>
+                        <dt>{{invoice.invoice_date}}</dt>
+                        <dd>Düzenleme Tarihi</dd>
+                    </div>
+                    <div>
+                        <dt>{{invoice.waybill_date}}</dt>
+                        <dd>İrsaliye Tarihi</dd>
+                    </div>
+                    <div>
+                        <dt>{{invoice.waybill_no}}</dt>
+                        <dd>İrsaliye No</dd>
+                    </div>
+                    <div>
+                        <dt>{{invoice.tax_no}}</dt>
+                        <dd>Vergi No</dd>
+                    </div>
+                    <div>
+                        <dt>{{invoice.invoice_type}}</dt>
+                        <dd>Fatura Tipi</dd>
+                    </div>
+                    <div>
+                        <dt>{{invoice.phone_number}}</dt>
+                        <dd>Telefon No</dd>
+                    </div>
+                    <div>
+                        <dt>{{invoice.comments}}</dt>
+                        <dd>Fatura Açıklaması</dd>
+                    </div>
+                    <div>
+                        <dt>{{invoice.last_updated|date:"h:m, d M, Y"}}</dt>
+                        <dd>Son Güncelleme Tarihi</dd>
+                    </div>
+                    <div>
+                        <dt>245.000 ₺</dt>
+                        <dd>Genel Toplam</dd>
+                    </div>
+                </dl>
+                <div class="transfer-edit">
+                    <button hx-get="{% url 'edit-invoice-form' invoice.id %}" hx-target="#dialog" class="icon-button"><i class="fas fa-edit"></i></button>
+                </div>
+                <div class="transfer-edit" style="margin-left: 10px;">
+                    <button hx-trigger="confirmed" hx-delete="{% url 'delete-invoice' invoice.id %}" hx-target="#invoice-list" id="delete-invoice-btn-{{invoice.id}}" type="submit" class="icon-button delete-button"><i class="fas fa-trash-alt"></i></button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+          
+          $(':button').on('click', function(){
+            if($(this).hasClass('delete-button')) {
+                Swal.fire({
+                text: 'Ögeyi silmek istediğinizden emin misiniz?', 
+                showDenyButton: true,
+                confirmButtonText: 'Evet',
+                denyButtonText: 'Hayır',
+                }).then((result) => {
+                    if(result.isConfirmed) {
+                        var id = $(this).attr("id");
+                        htmx.trigger(`#${id}`, 'confirmed');
+                        Swal.fire({
+                        toast: true,
+                        icon: 'success',
+                        title: 'Öge Silindi',
+                        animation: true,
+                        position: 'bottom',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    })
+                    } else if (result.isDenied) {
+                        Swal.fire({
+                        toast: true,
+                        icon: 'error',
+                        title: 'İşlem İptal Edildi',
+                        animation: true,
+                        position: 'bottom',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    })
+                    }
+                })
+            }
+          })
+        })
+    
+</script>
+{% endblock %}

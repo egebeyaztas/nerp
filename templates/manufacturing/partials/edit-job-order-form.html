@@ -1,0 +1,7 @@
+<form hx-post="{% url 'edit-job-order' order.id %}" enctype="multipart/form-data">
+    <table>
+        {{ form.as_p }}
+    </table>
+    <button type="submit" class="upload-job-order">Submit</button>
+    {% csrf_token %}
+</form>

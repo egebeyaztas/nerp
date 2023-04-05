@@ -1,0 +1,73 @@
+{% for emp in posemp %}
+<div class="transfer">
+    <!--<div class="transfer-logo">
+        <img src="https://assets.codepen.io/285131/apple.svg" />
+    </div>-->
+    <dl class="transfer-details">
+        <div>
+            <dt>{{emp.name}} {{emp.surname}}</dt>
+            <dd>İsim</dd>
+        </div>
+        <div>
+            <dt>{{emp.occupation}}</dt>
+            <dd>Uzmanlık</dd>
+        </div>
+        <div>
+            <dt>{{emp.status}}</dt>
+            <dd>Seviye</dd>
+        </div>
+        <div>
+            <dt><a href="{{emp.cv.url}}" class="table-download-link">CV İndir</a></dt>
+        </div>
+    </dl>
+    <div class="transfer-edit">
+        <button hx-get="{% url 'update-posemp-form' emp.id %}" hx-target="#dialog" class="icon-button"><i class="fas fa-edit"></i></button>
+    </div>
+    <div class="transfer-edit">
+        <button hx-trigger="confirmed" hx-delete="{% url 'delete-possible-employee' emp.id %}" hx-target="#posemp-list" id="delete-posemp-btn-{{emp.id}}" type="submit" class="icon-button delete-button"><i class="fas fa-trash-alt"></i></button>
+    </div>
+</div>
+{% endfor %}
+
+<script>
+    $(document).ready(function(){
+          
+          $(':button').on('click', function(){
+            if($(this).hasClass('delete-button')) {
+                Swal.fire({
+                text: 'Ögeyi silmek istediğinizden emin misiniz?', 
+                showDenyButton: true,
+                confirmButtonText: 'Evet',
+                denyButtonText: 'Hayır',
+                }).then((result) => {
+                    if(result.isConfirmed) {
+                        var id = $(this).attr("id");
+                        htmx.trigger(`#${id}`, 'confirmed');
+                        Swal.fire({
+                        toast: true,
+                        icon: 'success',
+                        title: 'Öge Silindi',
+                        animation: true,
+                        position: 'bottom',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    })
+                    } else if (result.isDenied) {
+                        Swal.fire({
+                        toast: true,
+                        icon: 'error',
+                        title: 'İşlem İptal Edildi',
+                        animation: true,
+                        position: 'bottom',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    })
+                    }
+                })
+            }
+          })
+        })
+    
+</script>

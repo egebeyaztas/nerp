@@ -1,0 +1,114 @@
+{% load widget_tweaks %}
+
+{% if editview %}
+<form hx-post="{% url 'edit-invoice' invoice.id %}">
+{% else %}
+<form hx-post="{% url 'create-invoice' %}">
+{% endif %}
+    {% csrf_token %}
+    <h2>Fatura Ekle</h2>
+    <div class="double-with-formset">
+        <div class="form-info">
+            <div class="form-group">
+                <div class="label">Alıcı Bilgileri</div>
+                <div class="input-container double">
+                    {% render_field form.name class="form-control" placeholder="Alıcı Adı" %}
+                    {% render_field form.phone_number class="form-control" placeholder="Alıcı Tel No" %}
+                </div>
+                <div class="input-container" style="margin-top: -70px;">
+                    {% render_field form.customer_adress class="textfield" placeholder="Alıcı Adresi" %}
+                </div>
+            </div>
+            <div class="form-group" style="margin-top:50px;">
+                <div class="label">Fatura Bilgileri</div>
+                <div class="input-container double">
+                    {% render_field form.invoice_date class="form-control" placeholder="Fatura Kesim Tarihi" %}
+                    {% render_field form.invoice_type class="form-control" placeholder="Fatura Tipi" %}
+                </div>
+                <div class="input-container">
+                    {% render_field form.comments rows="20" cols="50" class="textfield" placeholder="Fatura Açıklaması" %}
+                </div>
+                <div class="input-container checkbox-container" style="margin-top: 80px;">
+                    <span>Ödendi: </span>
+                    {% render_field form.paid class="checkboxfield" placeholder="Ödendi" %}
+                </div>
+            </div>
+        </div>
+        <div class="form-info">
+            <div class="form-group">
+                <div class="label">Ürünler</div>
+                <div class="scrollable">
+                    <div class="input-container formset-container" id="formset-container">
+                        {{ formset.management_form }}
+                        {% for lineform in formset %}
+                        <div class="hidden">{{lineform.id}}</div>
+                        <div class="formset-form">
+                            <div class="form-group">
+                                <div class="label small-label">Ürün Adı</div>
+                                {% render_field lineform.line_name class="form-control" placeholder="Işın Kılıcı.." %}
+                            </div>
+                            <div class="form-group">
+                                <div class="label small-label">Ürün Adedi</div>
+                                {% render_field lineform.line_quantity class="form-control" placeholder="Adet" %}
+                            </div>
+                            <div class="form-group">
+                                <div class="label small-label">Ürün Birim Fiyatı</div>
+                                {% render_field lineform.line_unit_price class="form-control" placeholder="Birim Fiyat" %}
+                            </div>
+                            <div class="form-group">
+                                <div class="label small-label">Ürün Toplam Fiyatı</div>
+                                {% render_field lineform.line_total_price class="form-control" placeholder="Toplam Fiyat" %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div id="empty-form" class="hidden">
+                        <div class="form-group">
+                            <div class="label small-label">Ürün Adı</div>
+                            {% render_field formset.empty_form.line_name class="form-control" placeholder="Işın Kılıcı.." %}
+                        </div>
+                        <div class="form-group">
+                            <div class="label small-label">Ürün Adedi</div>
+                            {% render_field formset.empty_form.line_quantity class="form-control" placeholder="Adet" %}
+                        </div>
+                        <div class="form-group">
+                            <div class="label small-label">Ürün Birim Fiyatı</div>
+                            {% render_field formset.empty_form.line_unit_price class="form-control" placeholder="Birim Fiyat" %}
+                        </div>
+                        <div class="form-group">
+                            <div class="label small-label">Ürün Toplam Fiyatı</div>
+                            {% render_field formset.empty_form.line_total_price class="form-control" placeholder="Toplam Fiyat" %}
+                        </div>
+                    </div>
+                    <button style="margin-top: 20px;" class="form-btn-1" id="add-formset" type="button">Ürün Ekle</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="form-btn-1" type="submit">Oluştur</button>
+</form>
+
+<script>
+    var add_button = document.querySelector("#add-formset")
+    var totalFormsx = document.getElementById("id_lines-TOTAL_FORMS")
+    console.log(totalFormsx);
+    
+    add_button.addEventListener('click', add_new_form)
+    function add_new_form(event) {
+        if(event){
+            event.preventDefault();
+        }
+        const currentForms = document.getElementsByClassName("formset-form")
+        const currentFormCount = currentForms.length // + 1;
+        const formCopyTarget = document.getElementById("formset-container")
+        const copyEmptyFormElement = document.getElementById("empty-form").cloneNode(true)
+        copyEmptyFormElement.setAttribute("class","formset-form")
+        copyEmptyFormElement.setAttribute("id", `form-${currentFormCount}`)
+        const regex = new RegExp("__prefix__", 'g')
+        copyEmptyFormElement.innerHTML = copyEmptyFormElement.innerHTML.replace(regex, currentFormCount)
+        totalFormsx.setAttribute('value', currentFormCount + 1)
+        formCopyTarget.append(copyEmptyFormElement);
+    }
+   
+    
+</script>

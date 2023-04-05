@@ -1,0 +1,39 @@
+{% load widget_tweaks %}
+
+<form method="post" action="{% url 'update-marketing-data' marketing.id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h2>Pazarlama Verilerini Güncelle</h2>
+    <div class="form-info" style="gap: 0;">
+        <div class="form-group">
+            <div class="label">Sosyal Medya</div>
+            <div class="double">
+                <div class="form-group">
+                    <div class="small-label" style="color:white;">Sosyal Medya Erişimleri</div>
+                    <div class="input-container">
+                        {% render_field form.social_media_marketing_reach class="form-control" placeholder="Sosyal Medya Erişimleri" %}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="small-label" style="color:white;">Sosyal Medya Müşteri Sayısı</div>
+                    <div class="input-container">
+                        {% render_field form.social_media_marketing_clients class="form-control" placeholder="Sosyal Medya Müşteri Sayısı" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">Email Pazarlama</div>
+            <div class="input-container double">
+                {% render_field form.mail_marketing_reach class="form-control" placeholder="Atılan Mail Sayısı" %}
+                {% render_field form.mail_marketing_clients class="form-control" placeholder="Email Pazarlama Müşteri Sayısı" %}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">Organik Müşteriler</div>
+            <div class="input-container">
+                {% render_field form.organic_marketing_clients class="form-control" placeholder="Organik Müşteri Sayısı" %}
+            </div>
+        </div>
+    </div>
+    <button class="form-btn-1" type="submit">Güncelle</button>
+</form>

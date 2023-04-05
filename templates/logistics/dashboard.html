@@ -1,0 +1,347 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+
+
+
+
+
+<div class="logistics-dashboard">
+  <div class="row">
+      <div class="dashboard__transfers col">
+          <div class="transfer__header-top" style="margin-bottom: 12px;">
+              <nav class="nav-tabs" id="nav-tabs">
+                {% with ontheway='Yolda' %}
+                  <button hx-get="{% url 'logistics-list' x %}" hx-target="#logistic-list" class="active">
+                  Şu an Yolda
+                  <span>7</span>
+                  </button>
+                {% endwith %}
+                {% with delivered='Teslim Edildi' %}
+                <button hx-get="{% url 'logistics-list' y %}"hx-target="#logistic-list">
+                  Teslim Edilenler
+                  <span>8</span>
+                </button>
+                {% endwith %}
+                {% with termin='Termin Bekliyor' %}
+                  <button hx-get="{% url 'logistics-list' z %}" hx-target="#logistic-list">
+                    Termin Bekliyor
+                    <span>7</span>
+                  </button>
+                {% endwith %}
+                  
+              </nav>
+              <button hx-get="{% url 'create-logistic-form' %}" hx-target="#dialog" class="btn-primary" href="#0">
+                Lojistik Kaydı Oluştur
+              </button>
+          </div>
+          <div class="transfer__header">
+              <h2>Gönderilen Ürünler</h2>
+              <div class="filter-options">
+                  <p>Filtre seçildi: Ağustos</p>
+                  <button class="icon-button">
+                      <i class="fas fa-filter"></i>
+                  </button>
+              </div>
+          </div>
+          <div id="logistic-list" hx-get="{% url 'logistics-list' x %}" hx-trigger="load, logisticsChanged from:body" class="transfers">
+              <tr><td>Yükleniyor..</td></tr>
+          </div>
+          <div class="btn-div">
+              <a class="btn-primary" href="{% url 'logistic-list-expanded' %}">Tümünü Gör</a>
+          </div>
+      </div>
+      <div class="top-row-panels">
+          <div class="panel">
+              <!--<div class="panel__go-to">></div>-->
+              <div class="panel__info">
+                  <h4><i class="fas fa-sun"></i> Aylık Gönderilen Ürün Sayısı</h4>
+                  <span>105</span>
+                  <p>4 tır %92 doluluk oranı ile gönderildi.</p>
+                  <div class="panel__notification">
+                      <div class="notify">
+                          <button class="btn-primary">Raporu Gör</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="panel">
+              <!--<div class="panel__go-to">></div>-->
+              <div class="panel__info">
+                  <h4><i class="fas fa-sun"></i> Aylık Ortalama Lojistik Tutarı</h4>
+                  <span>43000 ₺</span>
+                  <p>Geçen aya göre lojistik masraflarında %13 artış oldu.</p>
+                  <div class="panel__notification">
+                      <div class="notify">
+                          <button class="btn-primary" style="margin-top: -20px;">Raporu Gör</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="chart-box">
+          <canvas id="logistics_products_chart"></canvas>
+      </div>
+      <div class="chart-box">
+          <canvas id="logistics_cost_chart"></canvas>
+      </div>
+      <div class="chart-box">
+          <canvas id="logistics_countries_chart"></canvas>
+      </div>
+  </div>
+  <div class="dashboard__header" style="margin-bottom: -50px; width:87%; margin-top: 5px;">
+      <h2 class="dashboard__sub-title">Sipariş Listesi</h2>
+      <ul class="dashboard__header-filters">
+          <li>
+              <a href="#">Yıllık</a>
+          </li>
+          <li>
+              <div class="vertical"></div>
+          </li>
+          <li>
+              <a href="#">Aylık</a>
+          </li>
+          <li>
+              <div class="vertical"></div>
+          </li>
+          <li>
+              <a href="#">Günlük</a>
+          </li>
+      </ul>
+  </div>
+  <div class="datatable-container">
+      <!-- ======= Header tools ======= -->
+      <div class="header-tools">
+        <div class="tools">
+          <ul>
+            <li>
+              <button class="icon-button">
+                <i class="fas fa-filter"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+    
+        <div class="search">
+          <input type="search" class="search-input" placeholder="Ara..." />
+        </div>
+      </div>
+    
+      <!-- ======= Table ======= -->
+      <table class="datatable">
+        <thead>
+          <tr>
+            
+            <th>Durum</th>
+            <th>Sipariş ID</th>
+            <th>Müşteri Adı</th>
+            <th>Ürün Adı</th>
+            <th>Ürün Adedi</th>
+            <th>Son Teslim Tarihi</th>
+            <th>Müşteri Lokasyonu</th>
+            <th>Müşteri Yetkilisi</th>
+            <th>Paketlenmeye Hazır Ürün Sayısı</th>
+            <th></th>
+          </tr>
+        </thead>
+    
+        <tbody hx-get="{% url 'order-list' %}" hx-trigger="load, orderChanged from:body">
+        </tbody>
+      </table>
+    
+      <!-- ======= Footer tools ======= -->
+      <div class="footer-tools">
+        <div class="list-items">
+          <select name="n-entries" id="n-entries" class="n-entries">
+            <option value="5" selected>5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+          </select>
+          Veri Göster
+        </div>
+    
+        <div class="pages">
+          <ul>
+            <li><span class="active">1</span></li>
+            <li><button>2</button></li>
+            <li><button>3</button></li>
+            <li><button>4</button></li>
+            <li><span>...</span></li>
+            <li><button>9</button></li>
+            <li><button>10</button></li>
+          </ul>
+        </div>
+      </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const logistics_products_chart_ctx = document.getElementById('logistics_products_chart').getContext('2d');
+  const logistics_products_chart = new Chart(logistics_products_chart_ctx, {
+      type: 'bar',
+      data: {
+          labels: ['Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos'],
+          datasets: [{
+              label: 'Aylara Göre Gönderilen Ürün Sayıları',
+              data: [68, 119, 103, 96, 86, 105],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          responsive:true,
+          maintainAspectRatio: false,
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  min: 0,
+                  max: 140,
+                  ticks: {
+                      stepSize:20,
+                  },
+                  grid: {
+                      display: false
+                  },
+              },
+              x: {
+                  grid: {
+                      display: false,
+                  }
+              }
+          }
+      }
+  });
+  const logistics_cost_chart_ctx = document.getElementById('logistics_cost_chart').getContext('2d');
+  const logistics_cost_chart = new Chart(logistics_cost_chart_ctx, {
+      type: 'line',
+      data: {
+          labels: ['Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos'],
+          datasets: [{
+              label: 'Aylara Göre Lojistik Tutarları (Bin)',
+              data: [30, 25, 32, 40, 36, 43],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          responsive:true,
+          maintainAspectRatio: false,
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  min: 0,
+                  max: 60,
+                  ticks: {
+                      stepSize:10,
+                  }
+
+              }
+          }
+      }
+  });
+  const logistics_countries_chart_ctx = document.getElementById('logistics_countries_chart').getContext('2d');
+  const logistics_countries_chart = new Chart(logistics_countries_chart_ctx, {
+      type: 'doughnut',
+      data: {
+          labels: ['Almanya', 'Fransa', 'Türkiye', 'Azerbaycan'],
+          datasets: [{
+              label: 'Sipariş Gönderilen Ülkeler %',
+              data: [15, 40, 30, 15],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          responsive:true,
+          maintainAspectRatio: false,
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  min: 0,
+                  max: 140,
+                  ticks: {
+                      stepSize:20,
+                  },
+                  grid: {
+                      display: false
+                  },
+                  display: false
+              },
+              x: {
+                  grid: {
+                      display: false,
+                  },
+                  display: false
+              }
+          }
+      }
+  });
+</script>
+<script>
+ const navTabs = document.querySelectorAll("#nav-tabs > button");
+  navTabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+      navTabs.forEach((tab) => {
+      tab.classList.remove("active");
+      });
+      tab.classList.add("active");
+  });
+  });
+</script>
+{% endblock %}

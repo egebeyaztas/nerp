@@ -1,0 +1,24 @@
+{% for worker in workers %}
+<div class="transfer">
+    <!--<div class="transfer-logo">
+        <img src="https://assets.codepen.io/285131/apple.svg" />
+    </div>-->
+    <dl class="transfer-details">
+        <div>
+            <dt>{{worker.username}}</dt>
+            <dd>İsim</dd>
+        </div>
+        <div>
+            <dt>Kaynak</dt>
+            <dd>Uzmanlık</dd>
+        </div>
+        <div>
+            <dt>Müsait</dt>
+            <dd>Durum</dd>
+        </div>
+    </dl>
+    <div class="transfer-edit">
+        <button class="icon-button"><i class="fas fa-edit"></i></button>
+    </div>
+</div>
+{% endfor %}

@@ -1,0 +1,18 @@
+{% for order in orders %}
+<tr>
+    <td><span class="available"></span></td>
+    <td>{{order.order_id}}</td>
+    <td>{{order.client.name}}</td>
+    <td>{{order.get_first_product_group.name}}</td>
+    <td class="td-center">{{order.get_first_product_quantity}}</td>
+    <td>{{order.deadline}}</td>
+    <td>{{order.client.country}}</td>
+    <td>{{order.client.representative_name}}</td>
+    <td class="td-center">21</td>
+    <td>
+      <button hx-get="{% url 'update-order' order.id %}" hx-target="#dialog" class="icon-button table-button">
+          <i class="fas fa-edit"></i>
+      </button>
+    </td>
+</tr>
+{% endfor %}

@@ -1,0 +1,30 @@
+<div class="logistics-product-list form-personal-list">
+    <div class="dashboard__transfers col">
+        <div class="transfers">
+            {% for product in products %}
+            <div class="transfer">
+                <!--<div class="transfer-logo">
+                    <img src="https://assets.codepen.io/285131/apple.svg" />
+                </div>-->
+                <dl class="transfer-details">
+                    <div>
+                        <input type="checkbox" name="products" value="{{product.id}}" id="id_products_{{product.id}}" {% if product in logistic.products.all %} checked {% endif%}>
+                    </div>
+                    <div>
+                        <dt>{{product.name}}</dt>
+                        <dd>İsim</dd>
+                    </div>
+                    <div>
+                        <dt>{{product.price}}</dt>
+                        <dd>Fiyat</dd>
+                    </div>
+                    <div>
+                        <dt>{{product.product_group.name}}</dt>
+                        <dd>Ürün Grubu</dd>
+                    </div>
+                </dl>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

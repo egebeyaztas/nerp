@@ -1,0 +1,65 @@
+{% load widget_tweaks %}
+{% if editview %}
+<form hx-post="{% url 'update-task' task.id %}" enctype="multipart/form-data">
+{% else %}
+<form hx-post="{% url 'create-task' taskflow.id %}" enctype="multipart/form-data">
+{% endif %}
+    <h2>Görev Oluştur</h2>
+    <div class="double-with-formset">
+        <div class="form-info" style="gap:0;">
+            <div class="form-group">
+                <div class="label">Görev</div>
+                <div class="input-container">
+                    {% render_field form.task class="form-control" placeholder="Görev" %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">Görev Açıklaması</div>
+                <div class="input-container">
+                    {% render_field form.task_notes class="form-control" placeholder="Görev Açıklaması" %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">Son Tarih</div>
+                <div class="input-container">
+                    {% render_field form.deadline type="date" class="form-control" placeholder="Son Tarih" %}
+                </div>
+            </div>
+        </div>
+        <div class="form-info">
+            <div class="form-group">
+                <div class="label">Personeller</div>
+                <div class="job-order__personal-list form-personal-list">
+                        <div class="dashboard__transfers col">
+                            <div class="transfers">
+                                {% for worker in workers %}
+                                <div class="transfer">
+                                    <!--<div class="transfer-logo">
+                                        <img src="https://assets.codepen.io/285131/apple.svg" />
+                                    </div>-->
+                                    <dl class="transfer-details">
+                                        <input type="checkbox" name="workers" value="{{worker.id}}" id="id_workers_{{worker.id}}" {% if worker in task.workers.all %} checked {% endif %}>
+                                        <div>
+                                            <dt>{{worker.username}}</dt>
+                                            <dd>İsim</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Kaynak</dt>
+                                            <dd>Uzmanlık</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Müsait</dt>
+                                            <dd>Durum</dd>
+                                        </div>
+                                    </dl>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button style="margin-top: 30px;" type="submit" class="form-btn-1">Oluştur</button>
+    {% csrf_token %}
+</form>

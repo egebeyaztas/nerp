@@ -1,0 +1,7 @@
+<form method="post" action="{% url 'create-product' order.id %}" enctype="multipart/form-data">
+    <table>
+        {{ form.as_table }}
+    </table>
+    <button type="submit" class="upload-job-order">Submit</button>
+    {% csrf_token %}
+</form>

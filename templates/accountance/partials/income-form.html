@@ -1,0 +1,29 @@
+{% load widget_tweaks %}
+
+{% if editview %}
+<form hx-post="{% url 'update-income' income.id %}">
+{% else %}
+<form hx-post="{% url 'create-income' %}">
+{% endif %}
+    {% csrf_token %}
+    <h2 style="text-align: center; margin-top:10px;">Gelir Ekle</h2>
+    <div class="label">{{form.name.label}}</div>
+    <div class="input-container double">
+        {{ form.name }}
+        {{form.amount}}
+    </div>
+    <div class="label">{{form.description.label}}</div>
+    <div class="input-container">
+        {{ form.description }}
+    </div>
+    <div class="label">Sipariş</div>
+    <div class="input-container double">
+        {{ form.order }}
+        {{ form.payment_type }}
+    </div>
+    <div class="label">{{form.income_date.label}}</div>
+    <div class="input-container">
+        {% render_field form.income_date type="date" class="form-control" placeholder="mm/dd/yyyy" %}
+    </div>
+    <button class="form-btn-1" type="submit">Oluştur</button>
+</form>

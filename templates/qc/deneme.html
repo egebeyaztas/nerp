@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+<div class="purchasing-dashboard">
+  <div class="row">
+      <div class="dashboard__transfers col" style="position: relative;">
+          <div class="transfer__header-top" style="margin-bottom: 12px;">
+              <nav class="nav-tabs" id="nav-tabs">
+                  <button  class="nav-btn active" data-attr="active-qc-list">
+                  Aktif Emirler
+                  <span>4</span>
+                  </button>
+                  <button class="nav-btn" data-attr="purchase-passive-qc-list">
+                  Pasif Emirler
+                  <span>5</span>
+                  </button>
+                  <button class="nav-btn" data-attr="qc-product-list">
+                  Ürünler
+                  <span>6</span>
+                  </button>
+                  
+              </nav>
+              <button hx-get="{% url 'create-qc-order' %}" hx-target="#dialog" class="btn-primary">
+                  Kalite Kontrol Emri Oluştur
+              </button>
+          </div>
+          <div class="transfer__header">
+              <h2>Kalite Kontrol</h2>
+              <div class="filter-options">
+                  <p>Filtre seçildi: En Yeni</p>
+                  <button class="icon-button">
+                      <i class="fas fa-filter"></i>
+                  </button>
+              </div>
+          </div>
+          <div class="transfers" hx-get="{% url 'get-qc-lists' %}" hx-trigger="load, qcOrderChanged from:body">
+            <tr><td>Yükleniyor..</td></tr>
+          </div>
+          <div class="btn-div" style="position: absolute; bottom: 0; right: 0; margin-top: 10px;">
+              <a class="btn-primary" href="#">Tümünü Gör</a>
+          </div>
+      </div>
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+        const navTabs = document.querySelectorAll("#nav-tabs > button");
+        navTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+            navTabs.forEach((tab) => {
+            tab.classList.remove("active");
+            });
+            tab.classList.add("active");
+        });
+        });
+    
+    /*
+        $(document).on('click', '.nav-btn-starter', function(e) {
+            e.preventDefault();
+            const csrftoken = getCookie('csrftoken');
+            var data_attr = $(this).attr('data-attr');
+            var ths = $(this);
+            var transfers = ths.closest('div').parent().find('.transfers');
+            transfers.html('');
+            $.ajax({
+                type: 'POST',
+                url: '/purchasing/get-purchase-list',
+                data: {
+                    'csrfmiddlewaretoken': csrftoken,
+                    'data_attr': data_attr,
+                },
+                success: function(response) {
+                    html = response;
+                    transfers.append(html)
+                }
+            })
+        })
+        */
+        $(document).on('click', '.nav-btn', function(e) {
+            e.preventDefault();
+            const csrftoken = getCookie('csrftoken');
+            var data_attr = $(this).attr('data-attr');
+            var ths = $(this);
+            var transfers = ths.closest('div').parent().find('.transfers');
+            transfers.html('');
+            $.ajax({
+                type: 'POST',
+                url: '/qc/get-qc-lists',
+                data: {
+                    'csrfmiddlewaretoken': csrftoken,
+                    'data_attr': data_attr,
+                },
+                success: function(response) {
+                    html = response;
+                    transfers.append(html)
+                }
+            })
+        })
+    </script>
+
+
+{% endblock %}

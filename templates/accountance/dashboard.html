@@ -1,0 +1,620 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<!--
+<div class="container" style="gap:0px;">
+<h2>Bakiye</h2>
+<div class="split" id="balance_split">
+  <div class="container">
+    <h5>Brüt Gelir</h5>
+    <h2>{{balance.brute_income}}₺</h2>
+  </div>
+  <div class="container">
+    <h5>Net Gelir</h5>
+    <h2>{{balance.net_income}}₺</h2>
+  </div>
+  <div class="container">
+    <h5>Toplam Gelir</h5>
+    <h2>{{balance.total_balance}}₺</h2>
+  </div>
+</div>
+<div class="container" style="margin-top: -60px;">
+  <button class="upload_job_order" hx-get="{% url 'update-balance-form' balance.id %} " hx-swap="this" hx-target="closest .container">Bakiyeyi Güncelle</button>
+</div>
+</div>
+
+<div class="container">
+  <h2>Faturalar</h2>
+  <button class="upload_job_order" hx-get="{% url 'create-invoice-form' %}" hx-swap="beforeend" hx-target="#createinvoiceforms">Fatura Oluştur</button>
+  <div id="createinvoiceforms"></div>
+</div>
+<div class="container">
+  {% for invoice in invoices %}
+  <div class="split">
+    <h2>{{invoice.name}} - {{invoice.invoice_number}} - {{invoice.invoice_type}}</h2>
+    <div class="editinvoicebox">
+      <button class="upload_job_order" hx-get="{% url 'edit-invoice-form' invoice.id %}" hx-swap="this" hx-target="closest .editinvoicebox">Faturayı Düzenle</button>
+    </div>
+    <form method="post" action="{% url 'delete-invoice' invoice.id %}">
+      {% csrf_token %}
+      <button type="submit" class="upload_job_order">Faturayı Sil</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="container">
+  <div class="split">
+  <div class="left">
+  <h2>Giderler</h2>
+  <div class="expense-container">
+    <button class="upload_job_order" hx-get="{% url 'create-expense-form' %}" hx-swap="this" hx-target="closest .expense-container">Gider Oluştur</button>
+  </div>
+  <div class="expense-container">
+    {% for expense in expenses %}
+      <h3>{{expense.name}} - {{expense.expense_date}}</h3>
+      <div class="form-placeholder">
+        <button class="upload_job_order" hx-get="{% url 'update-expense-form' expense.id %}" hx-swap="this" hx-target="closest .form-placeholder">Gideri Düzenle</button>
+      </div>
+      <div class="form-placeholder">
+        <form action="{% url 'delete-expense' expense.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="upload_job_order">Gideri Sil</button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+  </div>
+  <div class="right">
+  <h2>Gelirler</h2>
+  <div class="expense-container">
+    <button class="upload_job_order" hx-get="{% url 'create-income-form' %}" hx-swap="this" hx-target="closest .expense-container">Gelir Oluştur</button>
+  </div>
+  <div class="expense-container">
+    {% for income in incomes %}
+      <h3>{{income.name}} - {{income.income_date}} - Sipariş ID:{{income.order.id}}</h3>
+      <div class="form-placeholder">
+        <button class="upload_job_order" hx-get="{% url 'update-income-form' income.id %}" hx-swap="this" hx-target="closest .form-placeholder">Geliri Düzenle</button>
+      </div>
+      <div class="form-placeholder">
+        <form action="{% url 'delete-income' income.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="upload_job_order">Geliri Sil</button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+  </div>
+  </div>
+</div>
+-->
+
+<div class="accountance-dashboard">
+  <div class="dashboard__header" style="margin-bottom: 10px;">
+      <div class="dashboard__sub-title_w-button">
+          <h2>Kazançlar</h2>
+          <button class="icon-button" hx-get="{% url 'update-balance-form' balance.id %}" hx-target="#dialog"><i class="fas fa-edit"></i></button>
+      </div>
+      <ul class="dashboard__header-filters">
+          <li>
+              <a href="#">Yıllık</a>
+          </li>
+          <li>
+              <div class="vertical"></div>
+          </li>
+          <li>
+              <a href="#">Aylık</a>
+          </li>
+          <li>
+              <div class="vertical"></div>
+          </li>
+          <li>
+              <a href="#">Günlük</a>
+          </li>
+      </ul>
+  </div>
+  <div class="row" id="row1">
+      <div class="panel" hx-trigger="onBalanceChanged from:body">
+          <!--<div class="panel__go-to">></div>-->
+          <div class="panel__info">
+              <h4>Aylık Ciro</h4>
+              <span>{{balance.brute_income}} ₺</span>
+              <p>Geçen aya kıyasla %23 artış</p>
+          </div>
+      </div>
+      <div class="panel" hx-trigger="onBalanceChanged from:body">
+          <!--<div class="panel__go-to">></div>-->
+          <div class="panel__info">
+              <h4>Aylık Net Kar</h4>
+              <span>{{balance.net_income}} ₺</span>
+              <p>Geçen aya kıyasla %38 artış</p>
+          </div>
+      </div>
+      <div class="panel" hx-trigger="onBalanceChanged from:body">
+          <!--<div class="panel__go-to">></div>-->
+          <div class="panel__info">
+              <h4>Beklenen Para</h4>
+              <span>{{balance.total_balance}} ₺</span>
+              <p>Geçen aya kıyasla %47 artış</p>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="chart-box">
+          <canvas id="balance_chart"></canvas>
+      </div>
+      <div class="chart-box">
+          <canvas id="expected_money_chart"></canvas>
+      </div>
+  </div>
+  <div class="dashboard__header" style="margin-bottom: -28.5px;">
+      <h2 class="dashboard__sub-title">Hareketler</h2>
+      <ul class="dashboard__header-filters">
+          <li>
+              <a href="#">Yıllık</a>
+          </li>
+          <li>
+              <div class="vertical"></div>
+          </li>
+          <li>
+              <a href="#">Aylık</a>
+          </li>
+          <li>
+              <div class="vertical"></div>
+          </li>
+          <li>
+              <a href="#">Günlük</a>
+          </li>
+      </ul>
+  </div>
+  <div class="row" id="row2">
+      <div class="dashboard__transfers incomes col">
+          <div class="transfer__header">
+              <h2>Gelir</h2>
+              <div class="filter-options">
+                  <p>Filtre seçildi: 25K ₺'dan fazla olanlar</p>
+                  <button class="icon-button">
+                      <i class="fas fa-filter"></i>
+                  </button>
+                  <button hx-get="{% url 'create-income-form' %}" hx-target="#dialog" class="icon-button">
+                      <i class="fas fa-plus"></i>
+                  </button>
+              </div>
+          </div>
+          <div id="income-list" class="transfers" hx-get="{% url 'income-list' %}" hx-trigger="load, incomeListChanged from:body">
+            <tr><td>Yükleniyor..</td></tr>
+          </div>
+          <div class="btn-div">
+              <a class="btn-primary" href="{% url 'income-list-expanded' %}">Tümünü Gör</a>
+          </div>
+      </div>
+      <div class="dashboard__transfers expenses col">
+          <div class="transfer__header">
+              <h2>Gider</h2>
+              <div class="filter-options">
+                  <p>Filtre seçildi: 1K $'dan az olanlar</p>
+                  <button class="icon-button">
+                      <i class="fas fa-filter"></i>
+                  </button>
+                  <button hx-get="{% url 'create-expense-form' %}" hx-target="#dialog" class="icon-button">
+                      <i class="fas fa-plus"></i>
+                  </button>
+              </div>
+          </div>
+          <div id="expense-list" class="transfers" hx-get="{% url 'expense-list' %}" hx-trigger="load, expenseListChanged from:body">
+              <tr><td>Yükleniyor..</td></tr>
+          </div>
+          <div class="btn-div">
+              <a class="btn-primary" href="{% url 'expense-list-expanded' %}">Tümünü Gör</a>
+          </div>
+      </div>
+  </div>
+  <div class="row chart-row">
+      <div class="chart-box">
+          <canvas id="expense_type_chart"></canvas>
+      </div>
+      <div class="chart-box">
+          <canvas id="income_expense_chart"></canvas>
+      </div>
+  </div>
+  <div class="dashboard__header" style="margin-bottom: -28.5px;">
+      <h2 class="dashboard__sub-title">Fatura Yönetimi</h2>
+      <ul class="dashboard__header-filters">
+          <li>
+              <a href="#">Yıllık</a>
+          </li>
+          <li>
+              <div class="vertical"></div>
+          </li>
+          <li>
+              <a href="#">Aylık</a>
+          </li>
+          <li>
+              <div class="vertical"></div>
+          </li>
+          <li>
+              <a href="#">Günlük</a>
+          </li>
+      </ul>
+  </div>
+  <div class="row" id="row3">
+      <div class="dashboard__transfers col">
+          <div class="transfer__header">
+              <h2>Faturalar</h2>
+              <div class="filter-options">
+                  <p>Filtre seçildi: Ağustostan itibaren</p>
+                  <button class="icon-button">
+                      <i class="fas fa-filter"></i>
+                  </button>
+                  <button class="icon-button" hx-get="{% url 'create-invoice-form' %}" hx-target="#dialog">
+                      <i class="fas fa-plus"></i>
+                  </button>
+              </div>
+          </div>
+          <div class="transfers" id="invoice-list" hx-get="{% url 'invoice-list' %}" hx-trigger="load, invoiceListChanged from:body">
+             <tr><td>Yükleniyor..</td></tr>
+          </div>
+          <div class="btn-div">
+              <a href="{% url 'invoice-list-expanded' %}" class="btn-primary">Tümünü Gör</a>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block modals %}
+
+
+<!--
+<div class="form-modal accountance-form-modal-invoice">
+  <div class="form-modal__content">
+      <div class="close-modal">+</div>
+      {% include 'accountance/partials/create-invoice-form.html' %}
+  </div>
+</div>
+<div class="form-modal accountance-form-modal-expense">
+  <div class="form-modal__content">
+      <div class="close-modal">+</div>
+      {% include 'accountance/partials/expense-form.html' %}
+  </div>
+</div>
+<div class="form-modal accountance-form-modal-income">
+  <div class="form-modal__content">
+      <div class="close-modal">+</div>
+      {% include 'accountance/partials/income-form.html' %}
+  </div>
+</div>
+
+<div class="form-modal hugh">
+  <form class="form-modal__content" enctype="multipart/form-data">
+      <div class="close-modal">+</div>
+      <h2>Müşteri Kaydı</h2>
+      <div class="label">kişisel</div>
+      <div class="input-container double">
+      <input type="text" class="form-control" placeholder="Müşteri İsmi">
+      <input type="text" class="form-control" placeholder="Müşteri Soy İsmi">
+      </div>
+      <div class="input-container">
+      <input type="text" class="form-control" placeholder="Müşteri ID">
+      </div>
+      <div class="label">email</div>
+      <div class="input-container">
+      <input type="text" class="form-control" placeholder="Müşteri Mail">
+      </div>
+      <div class="input-container">
+      <input type="text" class="form-control" placeholder="Müşteri Telefon">
+      </div>
+      <div class="label">Dosya Ekleme</div>
+      <div class="input-container">
+          <div class="custom-file-upload">
+                <input type="file" id="file" name="myfiles[]" multiple/>
+          </div>
+      </div>
+      <div class="input-container">
+      <button type="submit" class="form-btn-1">Oluştur</button>
+      </div>
+      
+  </form>
+</div>
+-->
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const balance_chart_ctx = document.getElementById('balance_chart').getContext('2d');
+  const balance_chart = new Chart(balance_chart_ctx, {
+      type: 'line',
+      data: {
+          labels: ['Ocak','Şubat','Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos'],
+          datasets: [
+              {
+              label: 'Ciro (Bin)',
+              data: [305,402,686, 459, 559, 962, 786, 1300],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          },
+              {
+              label: 'Net Kar (Bin)',
+              data: [158,262,368, 219, 303, 496, 386, 529],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }
+      ]
+      },
+      options: {
+          responsive:true,
+          maintainAspectRatio: false,
+          plugins: {
+              title: {
+                  display: true,
+                  text: 'Ciro - Net Kar Karşılaştırması',
+              },
+              legend: {
+                  position: 'top',
+              },
+          },
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  min: 0,
+                  max: 1500,
+                  ticks: {
+                      stepSize:250,
+                  },
+                  grid: {
+                      display: false
+                  },
+              },
+              x: {
+                  grid: {
+                      display: false,
+                  }
+              }
+          }
+      }
+  });
+  const expected_money_chart_ctx = document.getElementById('expected_money_chart').getContext('2d');
+  const expected_money_chart = new Chart(expected_money_chart_ctx, {
+      type: 'doughnut',
+      data: {
+          labels: ['EU-04-Sm3z0', 'TR-02-Px7u9', 'EU-02-Y6kRT', 'EU-03-MtP02'],
+          datasets: [{
+              label: 'Sipariş Kodu - Beklenen Para (Bin) Tablosu',
+              data: [270, 165, 302, 243],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          responsive:true,
+          maintainAspectRatio: false,
+          
+          plugins: {
+              title: {
+                  display: true,
+                  text: 'Sipariş Kodu - Beklenen Para (Bin) Tablosu',
+              },
+              legend: {
+                  position: 'top',
+              },
+          },
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  min: 0,
+                  max: 140,
+                  ticks: {
+                      stepSize:20,
+                  },
+                  grid: {
+                      display: false
+                  },
+                  display: false
+              },
+              x: {
+                  grid: {
+                      display: false,
+                  },
+                  display: false
+              }
+          }
+      }
+  });
+  const expense_type_chart_ctx = document.getElementById('expense_type_chart').getContext('2d');
+  const expense_type_chart = new Chart(expense_type_chart_ctx, {
+      type: 'pie',
+      data: {
+          labels: ['Malzeme', 'Fatura', 'Lojistik', 'Personel Maaşları','Diğer'],
+          datasets: [{
+              label: '',
+              data: [30, 16, 20,20, 14],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          responsive:true,
+          maintainAspectRatio: false,
+          
+          plugins: {
+              title: {
+                  display: true,
+                  text: 'Gider Türleri %',
+              },
+              legend: {
+                  position: 'top',
+              },
+          },
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  min: 0,
+                  max: 140,
+                  ticks: {
+                      stepSize:20,
+                  },
+                  grid: {
+                      display: false
+                  },
+                  display: false
+              },
+              x: {
+                  grid: {
+                      display: false,
+                  },
+                  display: false
+              }
+          }
+      }
+  });
+  const income_expense_chart_ctx = document.getElementById('income_expense_chart').getContext('2d');
+  const income_expense_chart = new Chart(income_expense_chart_ctx, {
+      type: 'line',
+      data: {
+          labels: ['Ocak','Şubat','Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos'],
+          datasets: [
+              {
+              label: 'Aylık Toplam Gider (Bin)',
+              data: [158,262,368, 219, 303, 496, 386, 529],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          },
+              {
+              label: 'Aylık Toplam Gelir (Bin)',
+              data: [305,402,686, 459, 559, 962, 786, 1300],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }
+      ]
+      },
+      options: {
+          responsive:true,
+          maintainAspectRatio: false,
+          plugins: {
+              title: {
+                  display: true,
+                  text: 'Aylık Gelir - Gider Karşılaştırması',
+              },
+              legend: {
+                  position: 'top',
+              },
+          },
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  min: 0,
+                  max: 1500,
+                  ticks: {
+                      stepSize:250,
+                  },
+                  grid: {
+                      display: false
+                  },
+              },
+              x: {
+                  grid: {
+                      display: false,
+                  }
+              }
+          }
+      }
+  });
+</script>
+
+
+{% endblock %}

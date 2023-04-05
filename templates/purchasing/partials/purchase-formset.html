@@ -1,0 +1,47 @@
+{% load widget_tweaks %}
+
+
+    <div class="form-group">
+        <div class="label">Ürünler</div>
+        <div class="scrollable">
+            <div class="input-container formset-container" id="formset-container">
+                {{ formset.management_form }}
+                {% for lineform in formset %}
+                <div class="hidden">{{lineform.id}}</div>
+                <div class="formset-form">
+                    <div class="form-group">
+                        <div class="label small-label">Ürün Adı</div>
+                        {% render_field lineform.stock class="form-control" placeholder="Işın Kılıcı.." %}
+                    </div>
+                    <div class="form-group">
+                        <div class="label small-label">Ürün Adedi</div>
+                        {% render_field lineform.quantity class="form-control" placeholder="Adet" %}
+                    </div>
+                    <div class="form-group">
+                        <div class="label small-label">Ürün Birim Fiyatı</div>
+                        {% render_field lineform.unit_price class="form-control" placeholder="Birim Fiyat" %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div id="empty-form" class="hidden">
+                <div class="form-group">
+                    <div class="label small-label">Ürün Adı</div>
+                    {% render_field formset.empty_form.line_name class="form-control" placeholder="Işın Kılıcı.." %}
+                </div>
+                <div class="form-group">
+                    <div class="label small-label">Ürün Adedi</div>
+                    {% render_field formset.empty_form.line_quantity class="form-control" placeholder="Adet" %}
+                </div>
+                <div class="form-group">
+                    <div class="label small-label">Ürün Birim Fiyatı</div>
+                    {% render_field formset.empty_form.line_unit_price class="form-control" placeholder="Birim Fiyat" %}
+                </div>
+                <div class="form-group">
+                    <div class="label small-label">Ürün Toplam Fiyatı</div>
+                    {% render_field formset.empty_form.line_total_price class="form-control" placeholder="Toplam Fiyat" %}
+                </div>
+            </div>
+            <button style="margin-top: 20px;" class="form-btn-1" id="add-formset" type="button">Ürün Ekle</button>
+        </div>
+    </div>

@@ -1,0 +1,30 @@
+{% for expense in expenses %}
+<div class="transfer">
+    <!--<div class="transfer-logo">
+<img src="https://assets.codepen.io/285131/apple.svg" />
+</div>-->
+    <dl class="transfer-details">
+        <div>
+            <dt>{{expense.name}}</dt>
+            <dd>Gider Adı</dd>
+        </div>
+        <div>
+            <dt>{{expense.expense_type}}</dt>
+            <dd>Gider Türü</dd>
+        </div>
+        <div>
+            <dt>{{expense.expense_date}}</dt>
+            <dd>Ödeme Günü</dd>
+        </div>
+    </dl>
+    <div class="transfer-number">
+        - $ {{expense.amount}}
+    </div>
+    <div class="transfer-edit">
+        <button hx-get="{% url 'update-expense-form' expense.id %}" hx-target="#dialog" class="icon-button"><i class="fas fa-edit"></i></button>
+    </div>
+    <div class="transfer-edit">
+        <button hx-trigger="confirmed" hx-delete="{% url 'delete-expense' expense.id %}" hx-target="#expense-list" type="submit" class="icon-button delete-button" id="delete-expense-btn-{{expense.id}}"><i class="fas fa-trash-alt"></i></button>
+    </div>
+</div>
+{% endfor %}

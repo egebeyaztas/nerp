@@ -1,0 +1,58 @@
+{% load widget_tweaks %}
+
+{% if editview %}
+<form hx-post="{% url 'update-logistic-data' logistic.id %}">
+{% else %}
+<form hx-post="{% url 'create-logistic-data' %}">
+{% endif %}
+    {% csrf_token %}
+    <h2>Lojistik Kaydı Oluştur</h2>
+    <div class="double-with-formset">
+        <div class="form-info" style="gap: 0;">
+            <div class="form-group">
+                <div class="label">Durum</div>
+                <div class="input-container">
+                    {% render_field form.status class="form-control" placeholder="Durum" %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">Müşteri</div>
+                <div class="input-container">
+                    {% render_field form.client class="form-control" placeholder="Durum" %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">Lojistik Firması Bilgileri</div>
+                <div class="input-container double">
+                    {% render_field form.logistic_firm_name class="form-control" placeholder="Firma Adı" %}
+                    {% render_field form.logistic_firm_phone class="form-control" placeholder="Firma Telefonu" %}
+                    {% render_field form.logistic_firm_email class="form-control" placeholder="Firma Mail" %}
+                </div>
+            </div>
+            <div class="double">
+                <div class="form-group">
+                    <div class="label">Gönderim Tarihi</div>
+                    <div class="input-container">
+                        {% render_field form.sending_date type="date" class="form-control" placeholder="Gönderim Tarihi"%}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="label">Tutar</div>
+                    <div class="input-container">
+                        {% render_field form.cost class="form-control" placeholder="Tutar"%}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-info">
+            <div class="orders-in-forms">
+                {% if editview %}
+                <button type="button" class="btn-primary show-products">Ürünleri Göster</button>
+                {% endif %}
+            </div>
+            <div id="form-product-container">
+            </div>
+        </div>
+    </div>
+    <button class="form-btn-1" type="submit">Oluştur</button>
+</form>

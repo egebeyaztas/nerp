@@ -1,0 +1,31 @@
+{% for stock in purchase_list_stocks %}
+<div class="transfer">
+    <!--<div class="transfer-logo">
+        <img src="https://assets.codepen.io/285131/apple.svg" />
+    </div>-->
+    <dl class="transfer-details">
+        <div>
+            <dt>{{stock.name}}</dt>
+            <dd>Stok Adı</dd>
+        </div>
+        <div>
+            <dt>{{stock.stock_group.name}}</dt>
+            <dd>Stok Türü</dd>
+        </div>
+        <div>
+            <dt>{{stock.quantity}} Adet</dt>
+            <dd>Kalan Adet</dd>
+        </div>
+        <div>
+            <dt>{{stock.last_updated|date:"h:m, d M, Y"}}</dt>
+            <dd>Son Tedarik Tarihi</dd>
+        </div>
+    </dl>
+    <div class="transfer-edit">
+        <button hx-get="{% url 'update-stock' stock.id %}" hx-target="#dialog" class="icon-button"><i class="fas fa-edit"></i></button>
+    </div>
+    <div class="transfer-edit" style="margin-left: 10px; margin-right:5px;">
+        <button class="icon-button"><i class="fas fa-minus"></i></button>
+    </div>
+</div>
+{% endfor %}

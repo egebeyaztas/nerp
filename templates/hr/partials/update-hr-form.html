@@ -1,0 +1,47 @@
+{% load widget_tweaks %}
+
+{% if editview %}
+<form hx-post="{% url 'update-possible-employee' temp.id %}" enctype="multipart/form-data">
+{% else %}
+<form hx-post="{% url 'create-possible-employee' %}" enctype="multipart/form-data">
+{% endif %}
+    {% csrf_token %}
+    <h2>Potansiyel Personel Formu</h2>
+    <div class="form-info" style="gap: 0;">
+        <div class="form-group">
+            <div class="label">Kişi Bilgileri</div>
+            <div class="input-container double">
+                {% render_field form.name class="form-control" placeholder="İsim" %}
+                {% render_field form.surname class="form-control" placeholder="Soy İsim" %}
+            </div>
+            <div class="input-container">
+                {% render_field form.email class="form-control" placeholder="Mail Adresi" %}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">İş Bilgileri</div>
+            <div class="input-container">
+                {% render_field form.occupation class="form-control" placeholder="Meslek" %}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="small-label" style="color:white; margin-bottom: 10px;">Deneyim</div>
+            <div class="input-container">
+                {% render_field form.status class="form-control" placeholder="Durumu" %}
+            </div>
+            <div class="small-label" style="color:white; margin-bottom: 10px;">Notlar</div>
+            <div class="input-container" style="height:150px;">
+                {% render_field form.notes rows="20" cols="50" class="textfield" placeholder="Personel hakkında not yazabilirsiniz.." %}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">CV Ekle</div>
+            <div class="input-container">
+                <div class="custom-file-upload">
+                    {% render_field form.cv type="file" id="hr-file" name="myFiles[]" %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="form-btn-1" type="submit">Oluştur</button>
+</form>

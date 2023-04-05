@@ -1,0 +1,39 @@
+{% for ad in ads %}
+<div class="transfer">
+    <!--<div class="transfer-logo">
+        <img src="https://assets.codepen.io/285131/apple.svg" />
+    </div>-->
+    <dl class="transfer-details">
+        <div>
+            <dt>{{ad.id}}</dt>
+            <dd>Reklam ID</dd>
+        </div>
+        <div>
+            <dt>{{ad.platform}}</dt>
+            <dd>Platform</dd>
+        </div>
+        <div>
+            <dt>{{ad.reached}}</dt>
+            <dd>Erişilen Kişi Sayısı</dd>
+        </div>
+        <div>
+            <dt>{{ad.gained_clients}}</dt>
+            <dd>Kazanılan Müşteri Sayısı</dd>
+        </div>
+        <div>
+            <dt>{{ad.cost}} $</dt>
+            <dd>Reklam Tutarı</dd>
+        </div>
+        <div>
+            <dt>{{ad.created_at|date:"h:m, d M, Y"}}</dt>
+            <dd>Reklam Verme Tarihi</dd>
+        </div>
+    </dl>
+    <div class="transfer-edit">
+        <button hx-get="{% url 'update-ads' ad.id %}" hx-target="#dialog" class="icon-button"><i class="fas fa-edit"></i></button>
+    </div>
+    <div class="transfer-edit" style="margin-left:10px;">
+        <button type="submit" class="icon-button delete-button"><i class="fas fa-trash-alt"></i></button>
+    </div>
+</div>
+{% endfor %}

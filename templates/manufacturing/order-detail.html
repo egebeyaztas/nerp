@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="detail__container">
+    <div class="dashboard__headers" style="margin-top: 40px;">
+        <div class="job_order-task-header" style="display:flex; flex-direction:row; gap:10px; align-items: center;">
+            <h2 class="dashboard__sub-title">{{order.job_order_id}} <em style="font-weight:400;"> - İş Emri</em></h2>
+            <button class="icon-button">
+                <i class="fas fa-edit"></i>
+            </button>
+        </div>
+    </div>
+    <div class="details" style="min-height: 200px; width: 92%; margin-top: 20px; display: flex; flex-direction:row; gap:20px;">
+        <div class="panel" style="min-height:150px; width:50rem;">
+            <!--<div class="panel__go-to">></div>-->
+            <div class="panel__info">
+                <h4><i class="fas fa-sun"></i> Yetkili</h4>
+                <span style="font-size:30px; position:relative; top:15px; font-weight: 500;">{{order.executive.username}}</span>
+            </div>
+        </div>
+        <div class="panel" style="min-height:150px; width:60rem; background-color:#45febc;">
+            <!--<div class="panel__go-to">></div>-->
+            <div class="panel__info">
+                <h4><i class="fas fa-sun"></i> Durum</h4>
+                <span style="font-size:30px; position:relative; top:15px; font-weight: 500;">{{order.status}}</span>
+            </div>
+        </div>
+        <div class="panel" style="min-height:150px; background-color:#bdbbb6;">
+            <!--<div class="panel__go-to">></div>-->
+            <div class="panel__info">
+                <h4><i class="fas fa-sun"></i> Son Teslim Tarihi</h4>
+                <span style="font-size:30px; position:relative; top:15px; font-weight: 500;">{{order.deadline|date:"h:m, d M, Y"}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="details" style="min-height: 200px; width: 92%; margin-top:-25px; display: flex; flex-direction:row; gap:20px;">
+        <div class="panel" style="min-height:150px; background-color:#bdbbb6;">
+            <!--<div class="panel__go-to">></div>-->
+            <div class="panel__info">
+                <h4><i class="fas fa-sun"></i> Müşteri</h4>
+                <span style="font-size:32px; position:relative; top:15px; font-weight: 500;">{{order.client}}</span>
+            </div>
+        </div>
+        <div class="panel" style="min-height:150px; background-color:#45febc;">
+            <!--<div class="panel__go-to">></div>-->
+            <div class="panel__info">
+                <h4><i class="fas fa-sun"></i> Üretilecek Ürün</h4>
+                <span style="font-size:30px; position:relative; top:15px;">Işın Kılıcı</span>
+            </div>
+        </div>
+        <div class="panel" style="min-height:150px; width: 40rem;">
+            <!--<div class="panel__go-to">></div>-->
+            <div class="panel__info">
+                <h4><i class="fas fa-sun"></i> Ürün Sayısı</h4>
+                <span style="font-size:50px; position:relative; top:5px; font-weight: 600;">{{order.product_quantity}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard__headers">
+        <div class="job_order-task-header" style="display:flex; flex-direction:row; gap:10px; align-items: center;">
+            <h2 class="dashboard__sub-title">{{order.job_order_id}} - Görev Akışı</h2>
+            <button hx-get="{% url 'create-task' taskflow.id %}" hx-target="#dialog" class="icon-button">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="tasks__container">
+        <div class="grid-view">
+            <div class="task-box">
+                <div class="task-wrapper">
+                    <div class="task__header">
+                        <h2><i class="fas fa-sun"></i> Görev 1</h2>
+                    </div>
+                    <div class="task__info">
+                        <ul>
+                            <li><span>Görev:</span> Görev</li>
+                            <li><span>Personeller:</span> Ahmet, Mehmet</li>
+                            <li><span>Başlangıç Zamanı:</span> 11:20</li>
+                            <li><span>Notlar:</span> Notlar
+                                Notlar NotlarNotlarNotlar Notlar Notlar Notlar 
+                                Notlar Notlar Notlar
+                            </li>
+                            <li><span>Durum:</span> Devam Ediyor</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="task-box">
+                <div class="task-wrapper">
+                    <div class="task__header">
+                        <h2><i class="fas fa-sun"></i> Görev 1</h2>
+                    </div>
+                    <div class="task__info">
+                        <ul>
+                            <li><span>Görev:</span> Görev</li>
+                            <li><span>Personeller:</span> Ahmet, Mehmet</li>
+                            <li><span>Başlangıç Zamanı:</span> 11:20</li>
+                            <li><span>Notlar:</span> Notlar
+                                Notlar NotlarNotlarNotlar Notlar Notlar Notlar 
+                                Notlar Notlar Notlar
+                            </li>
+                            <li><span>Durum:</span> Devam Ediyor</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="task-box">
+                <div class="task-wrapper">
+                    <div class="task__header">
+                        <h2><i class="fas fa-sun"></i> Görev 1</h2>
+                    </div>
+                    <div class="task__info">
+                        <ul>
+                            <li><span>Görev:</span> Görev</li>
+                            <li><span>Personeller:</span> Ahmet, Mehmet</li>
+                            <li><span>Başlangıç Zamanı:</span> 11:20</li>
+                            <li><span>Notlar:</span> Notlar
+                                Notlar NotlarNotlarNotlar Notlar Notlar Notlar 
+                                Notlar Notlar Notlar
+                            </li>
+                            <li><span>Durum:</span> Devam Ediyor</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="task-box">
+                <div class="task-wrapper">
+                    <div class="task__header">
+                        <h2><i class="fas fa-sun"></i> Görev 1</h2>
+                    </div>
+                    <div class="task__info">
+                        <ul>
+                            <li><span>Görev:</span> Görev</li>
+                            <li><span>Personeller:</span> Ahmet, Mehmet</li>
+                            <li><span>Başlangıç Zamanı:</span> 11:20</li>
+                            <li><span>Notlar:</span> Notlar
+                                Notlar NotlarNotlarNotlar Notlar Notlar Notlar 
+                                Notlar Notlar Notlar
+                            </li>
+                            <li><span>Durum:</span> Devam Ediyor</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="task-box">
+                <div class="task-wrapper">
+                    <div class="task__header">
+                        <h2><i class="fas fa-sun"></i> Görev 1</h2>
+                    </div>
+                    <div class="task__info">
+                        <ul>
+                            <li><span>Görev:</span> Görev</li>
+                            <li><span>Personeller:</span> Ahmet, Mehmet</li>
+                            <li><span>Başlangıç Zamanı:</span> 11:20</li>
+                            <li><span>Notlar:</span> Notlar
+                                Notlar NotlarNotlarNotlar Notlar Notlar Notlar 
+                                Notlar Notlar Notlar
+                            </li>
+                            <li><span>Durum:</span> Devam Ediyor</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="task-box">
+                <div class="task-wrapper">
+                    <div class="task__header">
+                        <h2><i class="fas fa-sun"></i> Görev 1</h2>
+                    </div>
+                    <div class="task__info">
+                        <ul>
+                            <li><span>Görev:</span> Görev</li>
+                            <li><span>Personeller:</span> Ahmet, Mehmet</li>
+                            <li><span>Başlangıç Zamanı:</span> 11:20</li>
+                            <li><span>Notlar:</span> Notlar
+                                Notlar NotlarNotlarNotlar Notlar Notlar Notlar 
+                                Notlar Notlar Notlar
+                            </li>
+                            <li><span>Durum:</span> Devam Ediyor</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard__headers" style="margin-top: 20px;">
+        <h2 class="dashboard__sub-title">{{order.job_order_id}} - Yüklenen Dosyalar</h2>
+    </div>
+    <div class="job_order-file__container">
+        <div class="grid-view">
+            {% for file in order.files.all %}
+            <div class="file-box-wrapper">
+                <form action="{% url 'delete-job-order-file' file.id %}" method="post">
+                    {% csrf_token %}
+                    <button class="icon-button"><i class="fas fa-times"></i></button>
+                </form>
+                <a href="{{file.file.url}}"><img src="{% static 'images/file_placeholder.png' %}"></a>
+                <p>{{file.filename}}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

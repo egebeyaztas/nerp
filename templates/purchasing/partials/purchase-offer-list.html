@@ -1,0 +1,69 @@
+{% for offer in purchase_offers %}
+<div class="transfer">
+    <!--<div class="transfer-logo">
+        <img src="https://assets.codepen.io/285131/apple.svg" />
+    </div>-->
+    <dl class="transfer-details">
+        <div>
+            <dt>{{offer.lines.all.first.stock.name}}</dt>
+            <dd>Stok Adı</dd>
+        </div>
+        <div>
+            <dt>>{{offer.lines.all.first.quantity}}</dt>
+            <dd>Satın Alma Adedi</dd>
+        </div>
+        <div>
+            <dt>{{offer.lines.all.first.unit_price}} ₺</dt>
+            <dd>Birim Fiyat</dd>
+        </div>
+        <div>
+            <dt>2250₺</dt>
+            <dd>Toplam Fiyat</dd>
+        </div>
+        <div>
+            <dt>{{offer.currency_type}}</dt>
+            <dd>Döviz Cinsi</dd>
+        </div>
+        <div>
+            <dt>{{offer.supplier.name}}</dt>
+            <dd>Satıcı Firma</dd>
+        </div>
+        <div>
+            <dt>{{offer.supplier.executive}}</dt>
+            <dd>Satıcı Firma Yetkilisi</dd>
+        </div>
+        <div>
+            <dt>{{offer.supplier.phone_number}}</dt>
+            <dd>Satıcı Firma İletişim</dd>
+        </div>
+        <div>
+            <dt>{{offer.approve_status}}</dt>
+            <dd>Teklif Onayı</dd>
+        </div>
+    </dl>
+    <div class="transfer-edit">
+        <button data-attr="{{offer.id}}" class="icon-button edit-offer"><i class="fas fa-edit"></i></button>
+    </div>
+</div>
+{% endfor %}
+
+<script>
+    $(document).on('click', '.edit-offer', function(e){
+        e.preventDefault();
+        var id = $(this).attr('data-attr');
+        const csrftoken = getCookie('csrftoken');
+        $('#dialog').html('');
+        $.ajax({
+            type:'GET',
+            url: '/purchasing/update-purchase-offer/' + id,
+            data: {
+                'id': id,
+            },
+            success: function(response) {
+                $('#dialog').html('');
+                $('#modal').css('display', 'flex');
+                $('#dialog').append(response)
+            }
+        })
+    })
+</script>

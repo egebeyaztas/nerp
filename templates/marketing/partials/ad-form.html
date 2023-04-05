@@ -1,0 +1,11 @@
+{% load widget_tweaks %}
+{% if editview %}
+<form hx-post="{% url 'update-ads' ad.id %}" enctype="multipart/form-data">
+{% else %}
+<form hx-post="{% url 'create-ads' %}" enctype="multipart/form-data">
+{% endif %}
+    {% csrf_token %}
+    <h2>Reklam Ekle</h2>
+    {{form.as_p}}
+    <button class="form-btn-1" type="submit">Oluştur</button>
+</form>

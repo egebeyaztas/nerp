@@ -1,0 +1,71 @@
+{% load widget_tweaks %}
+
+{% if editview %}
+<form hx-post="{% url 'update-qc-order' qc_order.id %}">
+{% else %}
+<form hx-post="{% url 'create-qc-order' %}">
+{% endif %}
+    {% csrf_token %}
+    <h2>Kalite Kontrol Emri Oluştur</h2>
+    <div class="double-with-formset">
+        <div class="form-info">
+            <div class="form-group">
+                <div class="double">
+                    <div class="form-group">
+                        <div class="small-label" style="color: #efefef;">
+                            İş Emri
+                        </div>
+                        <div class="input-container">
+                            {% render_field form.job_order class="form-control" %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="small-label" style="color: #efefef;">
+                            Yetkili
+                        </div>
+                        <div class="input-container">
+                            {% render_field form.executive class="form-control" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    Notlar
+                </div>
+                <div class="input-container" style="margin-bottom: 90px; width: 100%;">
+                    {% render_field form.description rows="20" cols="70" class="textfield" placeholder="Not Yazabilirsiniz." %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    Son Tarih
+                </div>
+                <div class="input-container">
+                    {% render_field form.deadline type="date" class="form-control" placeholder="MM/DD/YYYY" %}
+                </div>
+            </div>
+        </div>
+        <div class="form-info">
+            <div class="form-group">
+                <div class="label">
+                    Ürünler
+                </div>
+                <div class="input-container">
+                    {% render_field form.products class="form-control" placeholder="products" %}
+                </div>
+            </div>
+        </div>
+        <div class="form-info">
+            <div class="form-group">
+                <div class="label">
+                    Personeller
+                </div>
+                <div class="input-container">
+                    {% render_field form.workers class="form-control" placeholder="products" %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="form-btn-1" type="submit">Oluştur</button>
+</form>
